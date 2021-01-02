@@ -17,7 +17,14 @@
     </header>
 
     <main class="main">
-        <div id="user-menu">Start and player select goes here</div>
+        <div id="user-menu">
+            <form>
+                <input type="text" id="player-one" placeholder="Player One Name">
+                <input type="text" id="player-two" placeholder="Player Two Name">
+                <input type="submit" value="Submit">
+            </form>
+            <button id="start-btn">Start Game</button>
+        </div>
         <div id="game-board-wrapper">
             <div id="red-base" class="space">
                 <div class="base"> holds the pieces </div>
@@ -117,10 +124,17 @@
             <div class="space"></div>
             <div class="space"></div>
         </div>
+
         <div id="dice-menu">
-            Dice stuff goes here
+            <div id="dice">
+                dice
+            </div>
         </div>
     </main>
+
+    <footer>
+        <h3>©2021 AR</h3>
+    </footer>
 
 </body>
 
