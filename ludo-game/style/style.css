@@ -24,7 +24,6 @@ header{
     display: grid;
     grid-template-columns: repeat(15,50px);
     grid-auto-rows: 50px;
-    background-color: pink;
 
 }
 
@@ -36,34 +35,34 @@ header{
 #red-base{
     /*  start row / start column / end row / end column 
     */
-    grid-area: 1 / 1 /  6 /  7;
+    grid-area: 1 / 1 /  7 /  7;
     background-color: red;
 }
 
 #blue-base{
     /*  start row / start column / end row / end column 
     */
-    grid-area: 1 / 10 / 6 / 16; 
+    grid-area: 1 / 10 / 7 / 16; 
     background-color: blue;
 }
 
 #home{
         /*  start row / start column / end row / end column 
     */
-    grid-area: 6 / 7 / 9 / 10; 
+    grid-area: 7 / 7 / 10 / 10; 
     background-color: grey;
 }
 
 #yellow-base{
     /*  start row / start column / end row / end column 
 */
-grid-area: 9 / 1 / 15 / 7; 
+grid-area: 10 / 1 / 16 / 7; 
 background-color: yellow;
 }
 
 #green-base{
     /*  start row / start column / end row / end column 
     */
-    grid-area: 9 / 10 / 15 / 16; 
+    grid-area: 10 / 10 / 16 / 16; 
     background-color: greenyellow;
 }
