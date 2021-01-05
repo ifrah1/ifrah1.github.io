@@ -72,8 +72,13 @@ const SAFE_SPOTS = [
 ];
 
 // variables 
-const startGame = $('form');
+const $startGame = $('form');
+const $dice = $('#dice');
+const $playerTurn = $('#player-turn')
+
 let numPieces = 4;                      //how many pieces for each player, we can change this in future for more pieces for longer game
+
+let gameFinished = 0;
 
 //player objects for now two
 const playerOne = new Player("", 'red', 1);
@@ -82,7 +87,11 @@ const playerTwo = new Player("", 'green', 0);
 
 // will generate random number between 1-6 for dice
 const diceRoll = () => {
-    return Math.floor(Math.random() * 6) + 1;
+    //random between 1-6
+    const randomNum = Math.floor(Math.random() * 6) + 1;
+    //add the text to the div
+    $dice.text(randomNum);
+    return randomNum;
 }
 
 //creates the four pieces for the players 
@@ -98,17 +107,41 @@ const createPieces = playerObj => {
 // console.log(playerOne);
 // console.log(playerTwo);
 
-
-const submitHandler = evt => {
-    evt.preventDefault();
-
+const setUpPlayers = (playerOneObj, playerTwoObj) => {
     //add input names to player objects 
-    playerOne.name = $('#player-one').val();
-    playerTwo.name = $('#player-two').val();
+    playerOneObj.name = $('#player-one').val();
+    playerTwoObj.name = $('#player-two').val();
+    //create the pieces 
+    createPieces(playerOneObj);
+    createPieces(playerTwoObj);
     //make sure name are added
     // console.log(playerOne.name, playerTwo.name);
 }
-// start game
-startGame.on('submit', submitHandler);
+
+// const setPlayerPiece = (num, playerObj) => {
+//     if (num === 6) {
+//         playerObj.pi
+//     }
+// }
+
+const submitHandler = evt => {
+    evt.preventDefault();
+    setUpPlayers(playerOne, playerTwo);
+    $playerTurn.text(`${playerOne.name} turn!`);
+}
+
+const diceHandler = evt => {
+    evt.preventDefault();
+    const rolledNum = diceRoll();
+}
+
+// start game will put whole game together 
+const gameStart = () => {
+    $startGame.on('submit', submitHandler);
+    console.log(playerOne, playerTwo);
+    $dice.on('click', diceHandler);
+}
+
+gameStart();
 
 
