@@ -2,7 +2,7 @@ console.log("test");
 
 //class to create player objects 
 class Player {
-    constructor(name, color, playerTurn, pieces) {
+    constructor(name, color, playerTurn, start, pieces) {
         this.name = name;
         //holds the color of the player
         this.color = color;
@@ -10,6 +10,7 @@ class Player {
         //0 means not player turn and 1 means player turn
         this.playerTurn = playerTurn;
         //holds obj of arrays of pieces for player (four pieces for now)
+        this.start = start;
         this.pieces = pieces || [];
     }
 
@@ -79,18 +80,27 @@ const $playerTurn = $('#player-turn')
 let numPieces = 4;                      //how many pieces for each player, we can change this in future for more pieces for longer game
 
 let gameFinished = 0;
+let startGameClicked = 0;
+let currentTurn;
 
 //player objects for now two
-const playerOne = new Player("", 'red', 1);
-const playerTwo = new Player("", 'green', 0);
+const playerOne = new Player("", 'red', 1, '20');
+const playerTwo = new Player("", 'green', 0, '20');
 
+const playersArray = [playerOne, playerTwo];
+
+// console.log(playersArray);
 
 // will generate random number between 1-6 for dice
 const diceRoll = () => {
     //random between 1-6
     const randomNum = Math.floor(Math.random() * 6) + 1;
     //add the text to the div
-    $dice.text(randomNum);
+    if (startGameClicked === 1) {
+        $dice.text(randomNum);
+    } else {
+        alert("Please start game first!");
+    }
     return randomNum;
 }
 
@@ -123,22 +133,68 @@ const setUpPlayers = (playerOneObj, playerTwoObj) => {
 //         playerObj.pi
 //     }
 // }
+const checkPlayerPieces = (obj) => {
+    const pieces = obj.pieces;
+    console.log(pieces);
+
+    let allOutPlay = true;
+
+    pieces.forEach(obj => {
+        if (obj.inPlayStatus === 1) {
+            allOutPlay = false;
+        }
+    })
+    return allOutPlay;
+}
+
+//returns whose turn it is 
+const checkWhoseTurn = () => {
+    for (let i in playersArray) {
+        if (playersArray[i].playerTurn === 1) {
+            return i;
+        }
+    }
+}
+
+const addPieces = (obj) => {
+    const color = obj.color;
+    const start = obj.start
+
+    $('#red-inner-base').on('click', evt => {
+        $(`#${start}`).append(`<div class="piece ${color}-in"></div>`);
+        $('#red-1').remove();
+    })
+
+    // console.log(color, start);
+}
 
 const submitHandler = evt => {
     evt.preventDefault();
     setUpPlayers(playerOne, playerTwo);
-    $playerTurn.text(`${playerOne.name} turn!`);
+    startGameClicked = 1;
+    // console.log(checkWhoseTurn());
+    currentTurn = checkWhoseTurn();
+    $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
 }
 
 const diceHandler = evt => {
     evt.preventDefault();
     const rolledNum = diceRoll();
+    console.log(playersArray[currentTurn]);
+    const allOut = checkPlayerPieces(playersArray[currentTurn]);
+    console.log(allOut);
+
+    if (allOut && rolledNum === 6) {
+        addPieces(playersArray[currentTurn]);
+    } else {
+        // nextPlayerTurn();
+    }
 }
 
 // start game will put whole game together 
 const gameStart = () => {
     $startGame.on('submit', submitHandler);
-    console.log(playerOne, playerTwo);
+    // console.log(playerOne, playerTwo);
     $dice.on('click', diceHandler);
 }
 
