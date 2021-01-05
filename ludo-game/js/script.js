@@ -99,9 +99,16 @@ const createPieces = playerObj => {
 // console.log(playerTwo);
 
 
-// start game
-startGame.on('submit', (evt) => {
+const submitHandler = evt => {
     evt.preventDefault();
-    console.log($('#player-one').val());
-})
-// console.log(startGame);
+
+    //add input names to player objects 
+    playerOne.name = $('#player-one').val();
+    playerTwo.name = $('#player-two').val();
+    //make sure name are added
+    // console.log(playerOne.name, playerTwo.name);
+}
+// start game
+startGame.on('submit', submitHandler);
+
+
