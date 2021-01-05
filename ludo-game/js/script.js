@@ -156,15 +156,19 @@ const checkWhoseTurn = () => {
     }
 }
 
+//adds pieces when player rolls a 6 
 const addPieces = (obj) => {
     const color = obj.color;
     const start = obj.start
-
-    $('#red-inner-base').on('click', evt => {
+    //need to make it dynamic next 
+    $(`#${color}-inner-base`).on('click', evt => {
         $(`#${start}`).append(`<div class="piece ${color}-in"></div>`);
-        $('#red-1').remove();
+        // $(`#${color}-1`).remove();
+        // console.log(evt.target);
+        //removes the pieces once its in play
+        evt.target.remove();
     })
-
+    return;
     // console.log(color, start);
 }
 
@@ -179,6 +183,7 @@ const submitHandler = evt => {
 
 const diceHandler = evt => {
     evt.preventDefault();
+
     const rolledNum = diceRoll();
     console.log(playersArray[currentTurn]);
     const allOut = checkPlayerPieces(playersArray[currentTurn]);
@@ -186,8 +191,10 @@ const diceHandler = evt => {
 
     if (allOut && rolledNum === 6) {
         addPieces(playersArray[currentTurn]);
-    } else {
+    } else if (allOut && rolledNum < 6) {
         // nextPlayerTurn();
+    } else {
+        //nextPlayerturn(); 
     }
 }
 
