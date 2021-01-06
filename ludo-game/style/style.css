@@ -173,3 +173,71 @@ footer{
 #prev-player-roll {
     margin: 10px 0 0 0;
 }
+
+
+@media screen and (max-width: 600px) {
+    body {
+      background-color: black;
+    }
+
+    #game-board-wrapper {
+        display: grid;
+        grid-template-columns: repeat(15,35px);
+        grid-template-rows: repeat(15,35px);
+        margin: 25px 0 0 10px;
+    
+    }
+
+    .main{
+        margin: 20px;
+        display: flex;
+        justify-content:center;
+        flex-direction: column;
+    }
+    
+    #user-menu{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        background-color: violet;
+    }
+
+    #dice-menu{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px 0 0 0px;
+        background-color: tomato;
+    }
+
+    #home{
+        /*  start row / start column / end row / end column 
+    */
+    grid-area: 7 / 7 / 10 / 10; 
+    background-color: white;
+
+    /* creates the trainable effect  */
+    border-top: 53px solid blue;
+    border-right: 53px solid green; 
+    border-bottom: 53px solid yellow; 
+    border-left: 53px solid red;
+    }
+    .base{
+        margin: 50px;
+        width: 400px;
+        height: 180px;
+        background-color: white;
+        display: grid;
+        grid-template-columns: repeat(2,100px);
+        grid-template-rows: repeat(2,100px);
+        align-items: center;
+    }
+    .piece {
+        margin: 0 5px 5px 35px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 3px solid darkgray;
+    }
+  }
