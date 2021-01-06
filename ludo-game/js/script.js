@@ -1,4 +1,3 @@
-console.log("test");
 
 //class to create player objects 
 class Player {
@@ -135,7 +134,7 @@ const setUpPlayers = (playerOneObj, playerTwoObj) => {
 // }
 const checkPlayerPieces = (obj) => {
     const pieces = obj.pieces;
-    console.log(pieces);
+    // console.log(pieces);
 
     let allOutPlay = true;
 
@@ -162,12 +161,29 @@ const addPieces = (obj) => {
     const start = obj.start
     //need to make it dynamic next 
     $(`#${color}-inner-base`).on('click', evt => {
-        $(`#${start}`).append(`<div class="piece ${color}-in"></div>`);
-        // $(`#${color}-1`).remove();
         // console.log(evt.target);
-        //removes the pieces once its in play
-        evt.target.remove();
-    })
+        // console.log(evt.target.id)
+        if (evt.target.id === `${color}-inner-base`) {
+            alert("click a piece");
+        } else {
+            $(`#${start}`).append(`<div class="piece ${color}-in"></div>`);
+            //removes the pieces once its in play
+            evt.target.remove();
+        }
+    });
+
+    for (let key in obj) {
+        if (key === 'pieces') {
+            for (let ele of obj[key]) {
+                // console.log(ele);
+                if (ele.inPlayStatus === 0 && ele.positionOnBoard === -1) {
+                    ele.inPlayStatus = 1;
+                    break;
+                }
+            }
+        }
+    }
+    console.log(obj);
     return;
     // console.log(color, start);
 }
@@ -185,9 +201,10 @@ const diceHandler = evt => {
     evt.preventDefault();
 
     const rolledNum = diceRoll();
-    console.log(playersArray[currentTurn]);
+    // console.log(playersArray[currentTurn]);
     const allOut = checkPlayerPieces(playersArray[currentTurn]);
-    console.log(allOut);
+    // console.log(allOut);
+    // console.log("rolled num = ", rolledNum);
 
     if (allOut && rolledNum === 6) {
         addPieces(playersArray[currentTurn]);
