@@ -158,9 +158,18 @@ footer{
 }
 
 .piece {
-    margin: 10px 10px 10px 10px;
+    margin: 10px 10px 10px 35px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    border: 5px solid darkgray;
+    border: 3px solid darkgray;
+}
+
+.play{
+    display: flex;
+    justify-content: center;
+    margin: 0; 
+}
+#prev-player-roll {
+    margin: 10px 0 0 0;
 }
