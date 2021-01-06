@@ -25,6 +25,7 @@ class PlayerPieces {
         this.inPlayStatus = inPlayStatus || 0;
         //position on board is the div the piece is at
         //by default it is -1 meaning the piece is not in play 
+        //-999 means the piece is at home and out of game
         this.positionOnBoard = positionOnBoard;
         this.color = color;
     }
@@ -84,7 +85,7 @@ let currentTurn;
 
 //player objects for now two
 const playerOne = new Player("", 'red', 1, '20');
-const playerTwo = new Player("", 'green', 0, '20');
+const playerTwo = new Player("", 'green', 0, '53');
 
 const playersArray = [playerOne, playerTwo];
 
@@ -178,14 +179,34 @@ const addPieces = (obj) => {
                 // console.log(ele);
                 if (ele.inPlayStatus === 0 && ele.positionOnBoard === -1) {
                     ele.inPlayStatus = 1;
+                    ele.positionOnBoard = obj.start;
                     break;
                 }
             }
         }
     }
-    console.log(obj);
+    // console.log(obj);
     return;
     // console.log(color, start);
+}
+
+const nextPlayerTurn = () => {
+    // console.log(checkWhoseTurn());
+    const turn = parseInt(checkWhoseTurn());
+    if (turn === 0) {
+        playerOne.playerTurn = 0;
+        playerTwo.playerTurn = 1;
+        currentTurn = 1;
+        console.log(currentTurn);
+        $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
+    } else if (turn === 1) {
+        playerOne.playerTurn = 1;
+        playerTwo.playerTurn = 0;
+        currentTurn = 0;
+        console.log(currentTurn);
+        $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
+    }
+    // console.log(currentTurn, playersArray[currentTurn].name);
 }
 
 const submitHandler = evt => {
@@ -205,11 +226,11 @@ const diceHandler = evt => {
     const allOut = checkPlayerPieces(playersArray[currentTurn]);
     // console.log(allOut);
     // console.log("rolled num = ", rolledNum);
-
+    // debugger;
     if (allOut && rolledNum === 6) {
         addPieces(playersArray[currentTurn]);
     } else if (allOut && rolledNum < 6) {
-        // nextPlayerTurn();
+        nextPlayerTurn();
     } else {
         //nextPlayerturn(); 
     }
