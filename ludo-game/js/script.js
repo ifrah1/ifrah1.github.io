@@ -167,7 +167,7 @@ const addPieces = (obj) => {
         if (evt.target.id === `${color}-inner-base`) {
             alert("click a piece");
         } else {
-            $(`#${start}`).append(`<div class="piece ${color}-in"></div>`);
+            $(`#${start}`).append(`<div class="piece ${color}-in play"></div>`);
             //removes the pieces once its in play
             evt.target.remove();
         }
@@ -197,16 +197,64 @@ const nextPlayerTurn = () => {
         playerOne.playerTurn = 0;
         playerTwo.playerTurn = 1;
         currentTurn = 1;
-        console.log(currentTurn);
+        // console.log(currentTurn);
         $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
     } else if (turn === 1) {
         playerOne.playerTurn = 1;
         playerTwo.playerTurn = 0;
         currentTurn = 0;
-        console.log(currentTurn);
+        // console.log(currentTurn);
         $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
     }
     // console.log(currentTurn, playersArray[currentTurn].name);
+}
+
+const movePiece = (num, obj) => {
+    let parentId;
+    // const $pieceClass = `.piece ${obj.color}-in play`
+    $('.play').on('click', evt => {
+        // parentId = evt.target.parent().attr('id');
+        const parentDiv = evt.target.parentNode;
+        parentId = parentDiv.getAttribute('id');
+        console.log(parentId);
+
+        const newPos = findDivMovePosition(obj.color, parentId, num)
+        console.log(newPos);
+        addRemovePosition(parentId, newPos, obj.color);
+    });
+
+}
+
+const addRemovePosition = (oldPos, newPos, color) => {
+    newPos = newPos.toString();
+    // console.log(newPos, oldPos);
+    //removes the old spot
+    $(`#${oldPos}`).empty();
+    //adds to new spot
+    $(`#${newPos}`).append(`<div class="piece ${color}-in play"></div>`)
+
+}
+
+const findDivMovePosition = (color, currentDivId, rollNum) => {
+    console.log(color, currentDivId);
+    currentDivId = parseInt(currentDivId);
+    let newDivPosition;
+    let currentIdx
+
+    if (color === 'red') {
+        // RED_PLAYER_PATH
+        currentIdx = RED_PLAYER_PATH.indexOf(currentDivId);
+        newDivPosition = currentIdx + rollNum;
+
+        return (RED_PLAYER_PATH[newDivPosition]);
+
+    } else if (color === 'green') {
+        // RED_PLAYER_PATH
+        currentIdx = GREEN_PLAYER_PATH.indexOf(currentDivId);
+        newDivPosition = currentIdx + rollNum;
+        return (GREEN_PLAYER_PATH[newDivPosition]);
+    }
+
 }
 
 const submitHandler = evt => {
@@ -232,7 +280,8 @@ const diceHandler = evt => {
     } else if (allOut && rolledNum < 6) {
         nextPlayerTurn();
     } else {
-        //nextPlayerturn(); 
+        console.log("got here");
+        movePiece(rolledNum, playersArray[currentTurn]);
     }
 }
 
