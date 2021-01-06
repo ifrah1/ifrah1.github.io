@@ -75,7 +75,8 @@ const SAFE_SPOTS = [
 // variables 
 const $startGame = $('form');
 const $dice = $('#dice');
-const $playerTurn = $('#player-turn')
+const $playerTurn = $('#player-turn');
+const $prevPlayerRoll = $('#prev-player-roll');
 
 let numPieces = 4;                      //how many pieces for each player, we can change this in future for more pieces for longer game
 
@@ -190,21 +191,25 @@ const addPieces = (obj) => {
     // console.log(color, start);
 }
 
-const nextPlayerTurn = () => {
+const nextPlayerTurn = (prevNum) => {
     // console.log(checkWhoseTurn());
     const turn = parseInt(checkWhoseTurn());
     if (turn === 0) {
         playerOne.playerTurn = 0;
         playerTwo.playerTurn = 1;
+        $prevPlayerRoll.text(`${playersArray[currentTurn].name} rolled a ${prevNum}!`);
         currentTurn = 1;
         // console.log(currentTurn);
         $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
+        $dice.text("click here to roll");
     } else if (turn === 1) {
         playerOne.playerTurn = 1;
         playerTwo.playerTurn = 0;
+        $prevPlayerRoll.text(`${playersArray[currentTurn].name} rolled a ${prevNum}!`);
         currentTurn = 0;
         // console.log(currentTurn);
         $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
+        $dice.text("click here to roll");
     }
     // console.log(currentTurn, playersArray[currentTurn].name);
 }
@@ -213,6 +218,7 @@ const movePiece = (num, obj) => {
     let parentId;
     // const $pieceClass = `.piece ${obj.color}-in play`
     $('.play').on('click', evt => {
+        evt.preventDefault();
         // parentId = evt.target.parent().attr('id');
         const parentDiv = evt.target.parentNode;
         parentId = parentDiv.getAttribute('id');
@@ -229,7 +235,8 @@ const addRemovePosition = (oldPos, newPos, color) => {
     newPos = newPos.toString();
     // console.log(newPos, oldPos);
     //removes the old spot
-    $(`#${oldPos}`).empty();
+    // $(`#${oldPos}`).empty();
+    $(`#${oldPos}`).find('div:first').remove();
     //adds to new spot
     $(`#${newPos}`).append(`<div class="piece ${color}-in play"></div>`)
 
@@ -278,10 +285,13 @@ const diceHandler = evt => {
     if (allOut && rolledNum === 6) {
         addPieces(playersArray[currentTurn]);
     } else if (allOut && rolledNum < 6) {
-        nextPlayerTurn();
+        nextPlayerTurn(rolledNum);
+    } else if (rolledNum === 6) {
+        movePiece(rolledNum, playersArray[currentTurn]);
     } else {
         console.log("got here");
         movePiece(rolledNum, playersArray[currentTurn]);
+        nextPlayerTurn(rolledNum);
     }
 }
 

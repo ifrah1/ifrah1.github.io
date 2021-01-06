@@ -164,3 +164,7 @@ footer{
     border-radius: 50%;
     border: 5px solid darkgray;
 }
+
+#prev-player-roll {
+    margin: 10px 0 0 0;
+}
