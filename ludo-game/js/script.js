@@ -221,6 +221,14 @@ const addRemovePosition = (oldPos, newPos, color) => {
         $(`#${oldPos}`).find('div:first').remove();
         //updates player pieces info of how many left to get to home
         currentPlayerObj.updateRemainPieces(1)
+        //check if player has no more pieces remaining 
+        //did arrays check length since only two plyers 
+        //in future when more players will be added then we want game to keep going till one player left who is loser
+        if (playersArray.length === 2) {
+            if (currentPlayerObj.remainPiecesInPlay === 0) {
+                displayWinner(currentPlayerObj);
+            }
+        }
         //updates the pieces to -999 meaning it has reached home
         removePlayerPieces(currentPlayerObj.pieces);
         console.log(currentPlayerObj.remainPiecesInPlay);
@@ -337,6 +345,10 @@ const numPieceInBoard = arrPiecesObj => {
     return count;
 }
 
+const displayWinner = playerObj => {
+    gameFinished = 1;
+    alert(`${playerObj.name} has WON!!!!`)
+}
 
 const mainHandler = evt => {
     evt.preventDefault();
@@ -348,11 +360,18 @@ const mainHandler = evt => {
         && evt.target.getAttribute("type") !== "text"
         && evt.target.getAttribute("id") !== "dice"
         && evt.target.getAttribute("class") !== `piece ${currentPlayerObj.color}-in`
-        && evt.target.getAttribute("class") !== `piece ${currentPlayerObj.color}-in play`) {
+        && evt.target.getAttribute("class") !== `piece ${currentPlayerObj.color}-in play`
+        && gameFinished === 1) {
         // alert("wrong spot clicked");
         // console.log(evt.target.getAttribute('id'));
+        if (gameFinished === 1) {
+            $prevPlayerRoll.text(`Game Over!`);
+            $playerTurn.text('');
+            $dice.text("Game Over!");
+        }
         return;
     }
+
 
     //if submit hit then will add the players name
     if (evt.target.getAttribute("type") === "submit"
@@ -366,8 +385,6 @@ const mainHandler = evt => {
         $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
         // console.log(playersArray[0].name, playersArray[1].name)
     }
-
-    // Check to see if current player has won by checking remainPiecesInPlay left 
 
     if (evt.target.getAttribute("id") === "dice") {
         // console.log("clicked dice");
