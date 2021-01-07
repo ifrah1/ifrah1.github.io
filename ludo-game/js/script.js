@@ -96,7 +96,7 @@ let numPieces = 4;                      //how many pieces for each player, we ca
 let gameFinished = 0;
 let startGameClicked = 0;
 let currentTurn;
-let rolledNum;
+let rolledNum = null;
 
 //player objects for now two
 const playerOne = new Player("", 'red', 1, '20');
@@ -159,7 +159,7 @@ const checkPlayerPieces = (obj) => {
             allOutPlay = false;
         }
     })
-    console.log(pieces);
+    // console.log(pieces);
     return allOutPlay;
 }
 
@@ -193,6 +193,9 @@ const nextPlayerTurn = (prevNum) => {
         $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
         $dice.text("click here to roll");
     }
+
+    rolledNum = null;
+    return;
     // console.log(currentTurn, playersArray[currentTurn].name);
 }
 
@@ -314,6 +317,9 @@ const addPieceFromBase = (playerObj, evt) => {
         evt.target.remove();
     }
     updatePlayerPiece(playerObj);
+    $prevPlayerRoll.text(`${playerObj.name} rolled a ${rolledNum}!`)
+    rolledNum = null;
+    $dice.text("click here to roll");
     return;
 }
 
@@ -352,22 +358,22 @@ const displayWinner = playerObj => {
 
 const mainHandler = evt => {
     evt.preventDefault();
-    // console.log(evt.target.getAttribute("class"))
+    // console.log(evt.target.getAttribute("class")) 
     const currentPlayerObj = playersArray[checkWhoseTurn()];
 
     //does nothing if user does not click on the cilckable divs
     if (evt.target.getAttribute("type") !== "submit"
-        && evt.target.getAttribute("type") !== "text"
+        // && evt.target.getAttribute("type") !== "text"
         && evt.target.getAttribute("id") !== "dice"
         && evt.target.getAttribute("class") !== `piece ${currentPlayerObj.color}-in`
-        && evt.target.getAttribute("class") !== `piece ${currentPlayerObj.color}-in play`
-        && gameFinished === 1) {
+        && evt.target.getAttribute("class") !== `piece ${currentPlayerObj.color}-in play`) {
         // alert("wrong spot clicked");
         // console.log(evt.target.getAttribute('id'));
         if (gameFinished === 1) {
             $prevPlayerRoll.text(`Game Over!`);
             $playerTurn.text('');
             $dice.text("Game Over!");
+            return
         }
         return;
     }
@@ -384,11 +390,16 @@ const mainHandler = evt => {
         currentTurn = checkWhoseTurn();
         $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
         // console.log(playersArray[0].name, playersArray[1].name)
+        return;
     }
 
     if (evt.target.getAttribute("id") === "dice") {
         // console.log("clicked dice");
-        rolledNum = diceRoll();
+        if (rolledNum === null) {
+            rolledNum = diceRoll();
+        } else {
+            alert("already rolled");
+        }
     }
 
     //check to see if all pieces for current player is out
@@ -396,12 +407,21 @@ const mainHandler = evt => {
     const allOut = checkPlayerPieces(currentPlayerObj);
 
     //if player has all pieces out and does not roll six then switch player
+    console.log("hit here")
+    if (rolledNum === null) {
+        alert("please roll (click) dice!");
+        return;
+    }
     if (allOut && rolledNum < 6) {
         nextPlayerTurn(rolledNum);
+        console.log("hit here", rolledNum, (rolledNum < 6))
+        return;
     }
     console.log(allOut);
     //add piece when player hits 6 and they click on add piece 
     if (evt.target.getAttribute("class") === `piece ${currentPlayerObj.color}-in`) {
+        console.log("rolled num: ", rolledNum)
+        // if (rolledNum === null) return;
         // console.log(evt.target.getAttribute("class"))
         if (allOut && rolledNum === 6) {
             addPieceFromBase(currentPlayerObj, evt);
@@ -418,6 +438,10 @@ const mainHandler = evt => {
 
         if (rolledNum === 6 && piecePos !== -1) {
             movePiece(rolledNum, currentPlayerObj, evt);
+            $prevPlayerRoll.text(`${currentPlayerObj.name} rolled a ${rolledNum}!`)
+            rolledNum = null;
+            $dice.text("click here to roll");
+            return;
         } else if (piecePos === -1) {
             const numInBoard = numPieceInBoard(currentPlayerObj.pieces);
             // console.log(numInBoard);
@@ -455,11 +479,14 @@ const mainHandler = evt => {
                 if (!hasMove) {
                     alert("no pieces to move, next player turn");
                     nextPlayerTurn(rolledNum);
+                    return;
                 } else if (hasMove) {
                     alert("please pick another piece that can be moved");
+                    return;
                 } else {
                     movePiece(rolledNum, currentPlayerObj, evt);
                     nextPlayerTurn(rolledNum);
+                    return;
                 }
                 /*-----------------move later-----------------------*/
 
@@ -469,12 +496,11 @@ const mainHandler = evt => {
         } else {
             movePiece(rolledNum, currentPlayerObj, evt);
             nextPlayerTurn(rolledNum);
+            return;
         }
 
     }
 
-
-    // console.log(evt.target.getAttribute("class"));
 }
 
 const gameStart = () => {
