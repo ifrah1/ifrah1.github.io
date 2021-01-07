@@ -367,6 +367,8 @@ const mainHandler = evt => {
         // console.log(playersArray[0].name, playersArray[1].name)
     }
 
+    // Check to see if current player has won by checking remainPiecesInPlay left 
+
     if (evt.target.getAttribute("id") === "dice") {
         // console.log("clicked dice");
         rolledNum = diceRoll();
