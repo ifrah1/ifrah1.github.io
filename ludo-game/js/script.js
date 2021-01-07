@@ -203,29 +203,25 @@ const movePiece = (num, obj, evt) => {
     const color = obj.color;
 
     parentId = parentDiv.getAttribute('id');
-    parentClass = parentDiv.getAttribute('class');
-    // console.log(parentId);
-
-    // if (parentClass === `space ${color}-in ${color}-home`) {
-    //     handleHomeSpace(parentId, parentClass, obj);
-    // }
 
     const newPos = findDivMovePosition(color, parentId, num)
     // console.log(newPos);
-    if (newPos === -1) {
-        //need to add logic to see if player has any other piece in play if not then next player turn, if they do then they can move that piece instead of the one in home spaces 
-        alert("pick another piece to move")
-        // nextPlayerTurn(rolledNum);
-    } else {
-        addRemovePosition(parentId, newPos, color);
-    }
+    // if (newPos === -1) {
+    //     //need to add logic to see if player has any other piece in play if not then next player turn, if they do then they can move that piece instead of the one in home spaces 
+    //     alert("pick another piece to move")
+    //     // nextPlayerTurn(rolledNum);
+    // } else {
+    addRemovePosition(parentId, newPos, color);
+    // }
 }
 
 const addRemovePosition = (oldPos, newPos, color) => {
     if (newPos === 0) {
         const currentPlayerObj = playersArray[checkWhoseTurn()];
         $(`#${oldPos}`).find('div:first').remove();
+        //updates player pieces info of how many left to get to home
         currentPlayerObj.updateRemainPieces(1)
+        //updates the pieces to -999 meaning it has reached home
         removePlayerPieces(currentPlayerObj.pieces);
         console.log(currentPlayerObj.remainPiecesInPlay);
     } else {
@@ -276,7 +272,7 @@ const findDivMovePosition = (color, currentDivId, rollNum) => {
 }
 
 const pieceHomeCheck = idxPos => {
-    if (idxPos >= 51) {
+    if (idxPos >= 50) {
         const newPos = idxPos + rolledNum
         if (newPos > 56) {
             return -1;
@@ -386,8 +382,13 @@ const mainHandler = evt => {
 
     if (evt.target.getAttribute("class") === `piece ${currentPlayerObj.color}-in play`) {
         // console.log(evt.target.getAttribute("class"));
+        // let test = findDivMovePosition(currentPlayerObj.color, evt.target.parentNode.getAttribute('id'), rolledNum);
+        // console.log(test);
+
         if (rolledNum === 6) {
             movePiece(rolledNum, currentPlayerObj, evt);
+        } else if (findDivMovePosition(currentPlayerObj.color, evt.target.parentNode.getAttribute('id'), rolledNum) === -1) {
+            alert("cannot move that piece pick different");
         } else {
             movePiece(rolledNum, currentPlayerObj, evt);
             nextPlayerTurn(rolledNum);
@@ -395,8 +396,8 @@ const mainHandler = evt => {
 
     }
 
-    // console.log(evt.target.getAttribute("class"));
 
+    // console.log(evt.target.getAttribute("class"));
 }
 
 const gameStart = () => {
