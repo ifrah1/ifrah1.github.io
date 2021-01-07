@@ -236,16 +236,28 @@ const addRemovePosition = (oldPos, newPos, color) => {
         removePlayerPieces(currentPlayerObj.pieces);
         console.log(currentPlayerObj.remainPiecesInPlay);
     } else {
+        // //check to see if the current clicked div is in safe spot
+        // if (SAFE_SPOTS.includes(oldPos)) {
+        //     // if so then remove only the colored div player is and leave other divs/pieces alone
+        //     moveFromSafe(currentPlayerObj.color, oldPos, newPos);
+        // }
         newPos = newPos.toString();
         // console.log(newPos, oldPos);
         //removes the old spot
         // $(`#${oldPos}`).empty();
-        $(`#${oldPos}`).find('div:first').remove();
+        // $(`#${oldPos}`).find(`div.${color}-in.play`).remove();
+        //below statement finds the first div with given combined class name (multi class selector)
+        //then grabs the first one and then removes it
+        $(`#${oldPos}`).find(`div.${color}-in.play`).first().remove();
         //adds to new spot
         $(`#${newPos}`).append(`<div class="piece ${color}-in play"></div>`)
     }
 
 }
+
+// const moveFromSafe = (color, oldPos, newPos) => {
+
+// }
 
 const findDivMovePosition = (color, currentDivId, rollNum) => {
     console.log(color, currentDivId);
@@ -455,17 +467,33 @@ const mainHandler = evt => {
 
                 //will add below into its own function later: ------
                 /*-------------------------------------------------*/
-                const $allPieces = $(`.play`)
+                // const $allPieces = $(`.play`)
+                const $allPieces = $(`.${currentPlayerObj.color}-in.play`)
                 const currentPlayerPieces = [];
 
+                // console.log(`.${currentPlayerObj.color}-in.play`);
+                // const $test = $(`.${currentPlayerObj.color}-in.play`);
+                // $test.each(function (idx) {
+                //     console.log(this.getAttribute('class'));
+                // })
+
+                // $allPieces.each(function (idx) {
+                //     console.log(this.getAttribute('class'));
+                //     console.log(this.parentNode.getAttribute('id'));
+                //     if (this.getAttribute('class') === `piece ${currentPlayerObj.color}-in play`) {
+                //         currentPlayerPieces.push(findDivMovePosition(currentPlayerObj.color, this.parentNode.getAttribute('id'), rolledNum));
+
+                //         // total += (findDivMovePosition(currentPlayerObj.color, this.parentNode.getAttribute('id'), rolledNum));
+                //     }
+                // });
+
+                console.log("got here");
                 $allPieces.each(function (idx) {
                     console.log(this.getAttribute('class'));
                     console.log(this.parentNode.getAttribute('id'));
-                    if (this.getAttribute('class') === `piece ${currentPlayerObj.color}-in play`) {
-                        currentPlayerPieces.push(findDivMovePosition(currentPlayerObj.color, this.parentNode.getAttribute('id'), rolledNum));
 
-                        // total += (findDivMovePosition(currentPlayerObj.color, this.parentNode.getAttribute('id'), rolledNum));
-                    }
+                    currentPlayerPieces.push(findDivMovePosition(currentPlayerObj.color, this.parentNode.getAttribute('id'), rolledNum));
+
                 });
                 console.log(currentPlayerPieces);
                 // console.log(total);
