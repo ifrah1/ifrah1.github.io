@@ -326,6 +326,17 @@ const updatePlayerPiece = playerObj => {
     }
 }
 
+const numPieceInBoard = arrPiecesObj => {
+    let count = 0;
+
+    arrPiecesObj.forEach(obj => {
+        if (obj.inPlayStatus !== -999) {
+            count += obj.inPlayStatus;
+        }
+    });
+    return count;
+}
+
 
 const mainHandler = evt => {
     evt.preventDefault();
@@ -384,11 +395,58 @@ const mainHandler = evt => {
         // console.log(evt.target.getAttribute("class"));
         // let test = findDivMovePosition(currentPlayerObj.color, evt.target.parentNode.getAttribute('id'), rolledNum);
         // console.log(test);
+        const piecePos = findDivMovePosition(currentPlayerObj.color, evt.target.parentNode.getAttribute('id'), rolledNum);
 
-        if (rolledNum === 6) {
+        if (rolledNum === 6 && piecePos !== -1) {
             movePiece(rolledNum, currentPlayerObj, evt);
-        } else if (findDivMovePosition(currentPlayerObj.color, evt.target.parentNode.getAttribute('id'), rolledNum) === -1) {
-            alert("cannot move that piece pick different");
+        } else if (piecePos === -1) {
+            const numInBoard = numPieceInBoard(currentPlayerObj.pieces);
+            // console.log(numInBoard);
+            if (allOut || numInBoard === 1) {
+                alert("Cannot move that piece and no other piece to move, NEXT PLAYER TURN");
+                nextPlayerTurn(rolledNum);
+            } else if (numInBoard > 1) {
+                //need to add logic if all pieces are inside then cannot make a move if number to big
+                //check to see all position of pieces 
+                //if no piece can make move then next player turn
+
+                //will add below into its own function later: ------
+                /*-------------------------------------------------*/
+                const $allPieces = $(`.play`)
+                const currentPlayerPieces = [];
+
+                $allPieces.each(function (idx) {
+                    console.log(this.getAttribute('class'));
+                    console.log(this.parentNode.getAttribute('id'));
+                    if (this.getAttribute('class') === `piece ${currentPlayerObj.color}-in play`) {
+                        currentPlayerPieces.push(findDivMovePosition(currentPlayerObj.color, this.parentNode.getAttribute('id'), rolledNum));
+
+                        // total += (findDivMovePosition(currentPlayerObj.color, this.parentNode.getAttribute('id'), rolledNum));
+                    }
+                });
+                console.log(currentPlayerPieces);
+                // console.log(total);
+                //checks through the array to see if the position returned is greater than zero which means another piece can be moved instead of the chosen one
+                //reference google .some vs .every
+                //used some cause just need one number to be greater than or equal to zero
+                //where .every makes sure all numbers are
+                const hasMove = currentPlayerPieces.some(ele => ele >= 0);
+                console.log(hasMove);
+
+                if (!hasMove) {
+                    alert("no pieces to move, next player turn");
+                    nextPlayerTurn(rolledNum);
+                } else if (hasMove) {
+                    alert("please pick another piece that can be moved");
+                } else {
+                    movePiece(rolledNum, currentPlayerObj, evt);
+                    nextPlayerTurn(rolledNum);
+                }
+                /*-----------------move later-----------------------*/
+
+            } else {
+                alert("Please pick another piece on board to move");
+            }
         } else {
             movePiece(rolledNum, currentPlayerObj, evt);
             nextPlayerTurn(rolledNum);
