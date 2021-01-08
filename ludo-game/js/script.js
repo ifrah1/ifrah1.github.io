@@ -54,6 +54,23 @@ const RED_PLAYER_PATH = [
     0
 ];
 
+const BLUE_PLAYER_PATH = [
+    6, 9, 12, 15, 18,
+    25, 26, 27, 28, 29,
+    30, 42, 54,
+    53, 52, 51, 50, 49,
+    57, 60, 63, 66, 69,
+    72, 71, 70,
+    67, 64, 61, 58, 55,
+    48, 47, 46, 45, 44,
+    43, 31, 19,
+    20, 21, 22, 23, 24,
+    16, 13, 10, 7, 4,
+    1, 2,
+    5, 8, 11, 14, 17,
+    0
+];
+
 const GREEN_PLAYER_PATH = [
     53, 52, 51, 50, 49,
     57, 60, 63, 66, 69,
@@ -68,6 +85,24 @@ const GREEN_PLAYER_PATH = [
     25, 26, 27, 28, 29,
     30, 42,
     41, 40, 39, 38, 37,
+    0
+];
+
+
+const YELLOW_PLAYER_PATH = [
+    67, 64, 61, 58, 55,
+    48, 47, 46, 45, 44,
+    43, 31, 19,
+    20, 21, 22, 23, 24,
+    16, 13, 10, 7, 4,
+    1, 2, 3,
+    6, 9, 12, 15, 18,
+    25, 26, 27, 28, 29,
+    30, 42, 54,
+    53, 52, 51, 50, 49,
+    57, 60, 63, 66, 69,
+    72, 71,
+    68, 65, 62, 59, 56,
     0
 ];
 
@@ -104,9 +139,13 @@ let rolledNum = null;
 
 //player objects for now two
 const playerOne = new Player("", 'red', 1, '20');
+// const playerTwo = new Player("", 'blue', 0, '6');
 const playerTwo = new Player("", 'green', 0, '53');
+// const playerThree = new Player("", 'green', 0, '53');
+// const playerFour = new Player("", 'yellow', 0, '67');
 
 const playersArray = [playerOne, playerTwo];
+// const playersArray = [playerOne, playerTwo,playerThree,playerFour];
 
 
 // will generate random number between 1-6 for dice
@@ -184,6 +223,26 @@ const nextPlayerTurn = (prevNum) => {
         $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
         $dice.text("click here to roll");
     }
+    // else if (turn === 2) {
+    //     playerThree.playerTurn = 0;
+    //     playerFour.playerTurn = 1;
+    //     $prevPlayerRoll.text(`${playersArray[currentTurn].name} rolled a ${prevNum}!`);
+
+    //     currentTurn = 3;
+
+    //     $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
+    //     $dice.text("click here to roll");
+    // }else if (turn === 3) {
+    //     playerFour.playerTurn = 0;
+    //     playerOne.playerTurn = 1;
+    //     $prevPlayerRoll.text(`${playersArray[currentTurn].name} rolled a ${prevNum}!`);
+
+    //     currentTurn = 0;
+
+    //     $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
+    //     $dice.text("click here to roll");
+    // }
+
     //reset num to null so next player can roll with no prev num
     rolledNum = null;
 
@@ -382,6 +441,8 @@ const numPieceInBoard = arrPiecesObj => {
     return count;
 }
 
+
+
 const displayWinner = playerObj => {
     gameFinished = 1;
     alert(`${playerObj.name} has WON!!!!`)
@@ -389,8 +450,16 @@ const displayWinner = playerObj => {
 
 const mainHandler = evt => {
     evt.preventDefault();
+    //grabs current player object
     const currentPlayerObj = playersArray[checkWhoseTurn()];
 
+    //create a variable called evtAttribute
+    // const evtAttributeClass = evt.target.getAttribute('class')
+    // const evtAttributeId = evt.target.getAttribute('id')
+    // const evtAttributeType = evt.target.getAttribute('class')
+
+    //send to a function called invalidClick thats takes evt object and player obj and returns true or false
+    //if false exit event handler (return) else keep going
     //does nothing if user does not click on the clickable divs
     if (evt.target.getAttribute("type") !== "submit"
         // && evt.target.getAttribute("type") !== "text"
@@ -400,7 +469,7 @@ const mainHandler = evt => {
         // alert("wrong spot clicked");
         // console.log(evt.target.getAttribute('id'));
         if (gameFinished === 1) {
-            $prevPlayerRoll.text(`Game Over!`);
+            $prevPlayerRoll.text('Game Over!');
             $playerTurn.text('');
             $dice.text("Game Over!");
             return
@@ -408,6 +477,7 @@ const mainHandler = evt => {
         return;
     }
 
+    //create function that will set up the pieces and players when start game submit button is clicked 
     //if submit hit then will add the players name
     if (evt.target.getAttribute("type") === "submit"
         && playersArray[0].name === ""
@@ -421,6 +491,7 @@ const mainHandler = evt => {
         return;
     }
 
+    //create function that will roll dice
     if (evt.target.getAttribute("id") === "dice") {
         // console.log("clicked dice");
         if (rolledNum === null) {
@@ -434,17 +505,16 @@ const mainHandler = evt => {
     const allOut = checkPlayerPieces(currentPlayerObj);
 
     //if player has all pieces out and does not roll six then switch player
-    console.log("hit here")
     if (rolledNum === null) {
         alert("please roll (click) dice!");
         return;
     }
+
     if (allOut && rolledNum < 6) {
         nextPlayerTurn(rolledNum);
-        console.log("hit here", rolledNum, (rolledNum < 6))
         return;
     }
-    console.log(allOut);
+
     //add piece when player hits 6 and they click on add piece 
     if (evt.target.getAttribute("class") === `piece ${currentPlayerObj.color}-in`) {
         console.log("rolled num: ", rolledNum)
@@ -463,6 +533,7 @@ const mainHandler = evt => {
         // console.log(test);
         const piecePos = findDivMovePosition(currentPlayerObj.color, evt.target.parentNode.getAttribute('id'), rolledNum);
 
+        //need to move to own function 
         if ($(`#${piecePos}`).children().length > 0
             && !SAFE_SPOTS.includes(piecePos)) {
             const piecePosParentClass = $(`#${piecePos}`).find('.play').attr('class');
