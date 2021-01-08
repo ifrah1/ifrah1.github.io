@@ -408,7 +408,6 @@ const mainHandler = evt => {
         return;
     }
 
-
     //if submit hit then will add the players name
     if (evt.target.getAttribute("type") === "submit"
         && playersArray[0].name === ""
