@@ -226,6 +226,7 @@ const addRemovePosition = (oldPos, newPos, color) => {
         if (($(`#${newPos}`).children().length > 0)
             && !SAFE_SPOTS.includes(newPos)) {
             console.log("call kill function");
+            //need to modify logic so it does not kill its own piece
             killOtherPiece(newPos);
         }
         //do not think I need to convert, note for future; 
