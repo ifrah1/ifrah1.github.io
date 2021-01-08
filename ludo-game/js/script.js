@@ -463,6 +463,20 @@ const mainHandler = evt => {
         // console.log(test);
         const piecePos = findDivMovePosition(currentPlayerObj.color, evt.target.parentNode.getAttribute('id'), rolledNum);
 
+        if ($(`#${piecePos}`).children().length > 0
+            && !SAFE_SPOTS.includes(piecePos)) {
+            const piecePosParentClass = $(`#${piecePos}`).find('.play').attr('class');
+            //use substring to grab just the color of the kill piece 
+            const colorOfExistingPiece = piecePosParentClass.substring(6, piecePosParentClass.indexOf('-'));
+            console.log(colorOfExistingPiece);
+
+            if (colorOfExistingPiece === currentPlayerObj.color) {
+                alert("Player piece in existing spot. Please pick another piece");
+                return;
+            }
+
+        }
+
         if (rolledNum === 6 && piecePos !== -1) {
             movePiece(rolledNum, currentPlayerObj, evt);
             $prevPlayerRoll.text(`${currentPlayerObj.name} rolled a ${rolledNum}!`)
