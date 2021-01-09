@@ -37,12 +37,27 @@ form{
     justify-content: center;
     flex-direction: column;
     background-color:#778899;
-    border-radius: 15%;
-    height: 25vh;
+    opacity: 0.5;
+    border-radius: 5%
+}
+
+form:hover{
+    opacity: 0.8;
 }
 
 input{
     margin: 10px;
+}
+
+input[type=text]{
+    border:  2px solid white;
+    border-radius: 15%;
+}
+input[type=submit]{
+    border-radius: 15%;
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
 }
 
 #game-board-wrapper {
@@ -156,6 +171,7 @@ input{
     margin: 10px;
     width: 100px;
     height: 100px;
+    cursor: pointer;
 }
 
 footer{
@@ -171,6 +187,7 @@ footer{
     height: 30px;
     border-radius: 50%;
     border: 3px solid darkgray;
+    cursor: pointer;
 }
 
 .blocked{
@@ -182,6 +199,7 @@ footer{
     display: flex;
     justify-content: center;
     margin: 0; 
+    cursor: pointer;
 }
 #prev-player-roll {
     margin: 10px 0 45px 0;
