@@ -491,7 +491,7 @@ const mainHandler = evt => {
         // && playersArray[1].name === "") {
         console.log($playerOneName.val())
         if ($playerOneName.val() === ""
-            && $playerTwoName.val() === "") {
+            || $playerTwoName.val() === "") {
             alert('Please enter red and green player names');
             return;
         }
