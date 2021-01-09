@@ -443,8 +443,13 @@ const numPieceInBoard = arrPiecesObj => {
 }
 
 const displayWinner = playerObj => {
+    const playerWin = `${playerObj.name} has WON!!!!`
     gameFinished = 1;
-    alert(`${playerObj.name} has WON!!!!`)
+
+    alert(playerWin)
+    $prevPlayerRoll.text(playerWin);
+    $playerTurn.text(playerWin);
+    $dice.text("Game Over!");
 }
 
 const mainHandler = evt => {
@@ -468,9 +473,8 @@ const mainHandler = evt => {
         // alert("wrong spot clicked");
         // console.log(evt.target.getAttribute('id'));
         if (gameFinished === 1) {
-            $prevPlayerRoll.text('Game Over!');
-            $playerTurn.text('');
-            $dice.text("Game Over!");
+
+            displayWinner(currentPlayerObj);
             return
         }
         return;
@@ -495,11 +499,15 @@ const mainHandler = evt => {
 
     //create function that will roll dice
     if (evt.target.getAttribute("id") === "dice") {
+        if (gameFinished === 1) {
+            return alert("Game Over");
+        }
+
         if (startGameClicked === 1) {
             if (rolledNum === null) {
                 rolledNum = diceRoll();
             } else {
-                alert("Already rolled, Please click a piece to move or end turn");
+                return alert("Already rolled, Please click a piece to move or end turn");
             }
         } else {
             return alert("Please start game first");
@@ -615,7 +623,9 @@ const mainHandler = evt => {
             }
         } else {
             movePiece(rolledNum, currentPlayerObj, evt);
-            nextPlayerTurn(rolledNum);
+            if (gameFinished === 0) {
+                nextPlayerTurn(rolledNum);
+            }
             return;
         }
 
