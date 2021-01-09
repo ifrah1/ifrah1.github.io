@@ -1,38 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@900&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-body{
-    background-color: black;
+
+body {
+    background-color: #100c08;
 }
-header{
+
+header {
    display: flex;  
    justify-content: center;
    font-family: 'Big Shoulders Stencil Text', cursive;
 }
-#game-title{
+
+#game-title {
     margin: 20px;
     font-size: 80px;
     color: white; 
 }
 
-.main{
-    margin: 20px;
+.main {
     display: flex;
     justify-content:center;
     flex-wrap: wrap;
+    /* background-color: white; */
 }
 
-#user-menu{
+.menu-title {
+    margin: 10px;
+    color: #F0FFF0;
+}
+
+#user-menu {
     display: flex;
     justify-content: center;
     flex-direction: column;
 }
 
-form{
+form {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -41,19 +49,19 @@ form{
     border-radius: 5%
 }
 
-form:hover{
+form:hover {
     opacity: 0.8;
 }
 
-input{
+input {
     margin: 10px;
 }
 
-input[type=text]{
+input[type=text] {
     border:  2px solid white;
     border-radius: 15%;
 }
-input[type=submit]{
+input[type=submit] {
     border-radius: 15%;
     cursor: pointer;
     color: black;
