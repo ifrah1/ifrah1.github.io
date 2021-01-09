@@ -31,9 +31,26 @@ Currently Two players (more players feature will be added later)
 
     - To win first player to take all four pieces to home triangle will win
 
-### UI Screenshots: 
-Start game: 
-![](images/start-game.png)
+## UI Screenshots: 
+### Start game: 
+![](images/start-game.png) 
+
+### Roll Dice:  
+![](images/roll.png)
+
+
+### Roll & Turn Info: 
+![](images/info-turn.png)
+
+### Putting piece in play
+![](images/piece-in-play.png)
+
+### Moving Piece
+![](images/move-piece.png)
+
+### Ending turn (click on piece in field to end turn) 
+
+![](images/end-turn.png)
 
 ## Wireframe:
 ![](images/wireframe-ludo-game.png)
@@ -45,14 +62,14 @@ Start game:
     - jQuery
 
 ## Approach: 
-Explain your approach to develop the app/game
+To Create this game I first created the CSS & HTML to Design the layout of the board. I used display grid to create the board for the game. Once I had a rough sketch of how the board is I started to design my JavaScript solution. I thought about the functions and steps I would need. Once I had my design solution I started to code and test each function as I wrote them.  
 
-## Challenges: 
-List any challenges and how you overcame them
-Indicate any outstanding problems
+## Resources:
+w3schools: https://www.w3schools.com/  
+MDN Web Docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
-## Additional information:
-Add anything else you would like us to know 
+
+
 
 ## App Demo 
 Link to app: https://ifrah1.github.io/ludo-game/

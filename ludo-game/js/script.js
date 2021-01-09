@@ -499,7 +499,7 @@ const mainHandler = evt => {
             if (rolledNum === null) {
                 rolledNum = diceRoll();
             } else {
-                alert("already rolled");
+                alert("Already rolled, Please click a piece to move or end turn");
             }
         } else {
             return alert("Please start game first");
