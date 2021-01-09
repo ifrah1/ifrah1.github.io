@@ -1,7 +1,7 @@
-
 //class to create player objects 
 class Player {
     constructor(name, color, playerTurn, start, pieces) {
+        //players name that was entered
         this.name = name;
         //holds the color of the player
         this.color = color;
@@ -154,11 +154,14 @@ const diceRoll = () => {
     const randomNum = Math.floor(Math.random() * 6) + 1;
     // const randomNum = 6
     //add the text to the div
-    if (startGameClicked === 1) {
-        $dice.text(randomNum);
-    } else {
-        alert("Please start game first!");
-    }
+    // if (startGameClicked === 1) {
+    //     $dice.text(randomNum);
+    // } else {
+    //     alert("Please start game first!");
+    // }
+
+    $dice.text(randomNum);
+
     return randomNum;
 }
 
@@ -213,7 +216,8 @@ const nextPlayerTurn = (prevNum) => {
         currentTurn = 1;
 
         $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
-        $dice.text("click here to roll");
+        $dice.text("click here to roll")
+            .css('color', `${playersArray[currentTurn].color}`);;
     } else if (turn === 1) {
         playerOne.playerTurn = 1;
         playerTwo.playerTurn = 0;
@@ -222,7 +226,8 @@ const nextPlayerTurn = (prevNum) => {
         currentTurn = 0;
 
         $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
-        $dice.text("click here to roll");
+        $dice.text("click here to roll")
+            .css('color', `${playersArray[currentTurn].color}`);
     }
     // later use when adding more players 
     // else if (turn === 2) {
@@ -481,9 +486,15 @@ const mainHandler = evt => {
 
     //create function that will set up the pieces and players when start game submit button is clicked 
     //if submit hit then will add the players name
-    if (evt.target.getAttribute("type") === "submit"
-        && playersArray[0].name === ""
-        && playersArray[1].name === "") {
+    if (evt.target.getAttribute("type") === "submit") {
+        // && playersArray[0].name === ""
+        // && playersArray[1].name === "") {
+        console.log($playerOneName.val())
+        if ($playerOneName.val() === ""
+            && $playerTwoName.val() === "") {
+            alert('Please enter red and green player names');
+            return;
+        }
         setUpPlayers(playerOne, playerTwo);
         startGameClicked = 1;
 
@@ -496,22 +507,26 @@ const mainHandler = evt => {
     //create function that will roll dice
     if (evt.target.getAttribute("id") === "dice") {
         // console.log("clicked dice");
-        if (rolledNum === null) {
-            rolledNum = diceRoll();
+        if (startGameClicked === 1) {
+            if (rolledNum === null) {
+                rolledNum = diceRoll();
+            } else {
+                alert("already rolled");
+            }
         } else {
-            alert("already rolled");
+            return alert("Please start game first");
         }
     }
 
     //check to see if all pieces for current player is out
     const allOut = checkPlayerPieces(currentPlayerObj);
 
-    //if player has all pieces out and does not roll six then switch player
     if (rolledNum === null) {
         alert("please roll (click) dice!");
         return;
     }
 
+    //if player has all pieces out and does not roll six then switch player
     if (allOut && rolledNum < 6) {
         nextPlayerTurn(rolledNum);
         return;
