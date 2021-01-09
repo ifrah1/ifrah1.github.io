@@ -287,10 +287,10 @@ footer{
     grid-area: 7 / 7 / 10 / 10; 
 
     /* creates the triangle effect  */
-    border-top: 53px solid #4169E1;
-    border-right: 53px solid #32CD32; 
-    border-bottom: 53px solid #FFD700; 
-    border-left: 53px solid #CD5C5C;
+    border-top: 49px solid #4169E1;
+    border-right: 49px solid #32CD32; 
+    border-bottom: 49px solid #FFD700; 
+    border-left: 49px solid #CD5C5C;
     }
     .base{
         margin: 50px;
