@@ -152,6 +152,7 @@ const playersArray = [playerOne, playerTwo];
 const diceRoll = () => {
     //random between 1-6
     const randomNum = Math.floor(Math.random() * 6) + 1;
+    // const randomNum = 6
     //add the text to the div
     if (startGameClicked === 1) {
         $dice.text(randomNum);
@@ -556,10 +557,14 @@ const mainHandler = evt => {
             return;
         } else if (piecePos === -1) {
             const numInBoard = numPieceInBoard(currentPlayerObj.pieces);
-            // console.log(numInBoard);
+            //(numInBoard === 1  && rolledNum !==6) change arif
             if (allOut || numInBoard === 1) {
-                alert("Cannot move that piece and no other piece to move, NEXT PLAYER TURN");
-                nextPlayerTurn(rolledNum);
+                if (numInBoard === 1 && rolledNum == 6 && currentPlayerObj.remainPiecesInPlay > 1) {
+                    alert("Cannot move that piece but you can put a piece in play! ")
+                } else {
+                    alert("Cannot move that piece and no other piece to move, NEXT PLAYER TURN");
+                    nextPlayerTurn(rolledNum);
+                }
             } else if (numInBoard > 1) {
                 //need to add logic if all pieces are inside then cannot make a move if number to big
                 //check to see all position of pieces 
@@ -586,9 +591,16 @@ const mainHandler = evt => {
                 console.log(hasMove);
 
                 if (!hasMove) {
-                    alert("no pieces to move, next player turn");
-                    nextPlayerTurn(rolledNum);
-                    return;
+                    const sum = currentPlayerPieces.reduce((curr, next) => curr + next);
+
+                    if (rolledNum === 6 && currentPlayerObj.remainPiecesInPlay > 1 && sum > 0) {
+                        alert("no pieces to move but you can bring a piece in play from base")
+
+                    } else {
+                        alert("no pieces to move, next player turn");
+                        nextPlayerTurn(rolledNum);
+                        return;
+                    }
                 } else if (hasMove) {
                     alert("please pick another piece that can be moved");
                     return;
