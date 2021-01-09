@@ -224,6 +224,7 @@ const nextPlayerTurn = (prevNum) => {
         $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
         $dice.text("click here to roll");
     }
+    // later use when adding more players 
     // else if (turn === 2) {
     //     playerThree.playerTurn = 0;
     //     playerFour.playerTurn = 1;
