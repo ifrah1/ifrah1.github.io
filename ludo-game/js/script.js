@@ -119,13 +119,13 @@ const SAFE_SPOTS = [
 // variables 
 const $main = $('.main');
 const $startGame = $('form');
+
 const $dice = $('#dice');
-const $playerTurn = $('#player-turn');
 const $prevPlayerRoll = $('#prev-player-roll');
+
+const $playerTurn = $('#player-turn');
 const $playerOneName = $('#player-one');
 const $playerTwoName = $('#player-two');
-const $homeTag = $('#home');
-
 
 let numPieces = 4;                      //how many pieces for each player, we can change this in future for more pieces for longer game
 
@@ -148,31 +148,6 @@ const playersArray = [playerOne, playerTwo];
 // const playersArray = [playerOne, playerTwo,playerThree,playerFour];
 
 
-// will generate random number between 1-6 for dice
-const diceRoll = () => {
-    //random between 1-6
-    const randomNum = Math.floor(Math.random() * 6) + 1;
-    // const randomNum = 6
-    //add the text to the div
-    // if (startGameClicked === 1) {
-    //     $dice.text(randomNum);
-    // } else {
-    //     alert("Please start game first!");
-    // }
-
-    $dice.text(randomNum);
-
-    return randomNum;
-}
-
-//creates the four pieces for the players 
-const createPieces = playerObj => {
-    for (let i = 0; i < numPieces; i++) {
-        const piece = new PlayerPieces(0, -1, playerObj.color);
-        playerObj.addPieces(piece);
-    }
-}
-
 const setUpPlayers = (playerOneObj, playerTwoObj) => {
     //add input names to player objects 
     playerOneObj.name = $playerOneName.val();
@@ -183,6 +158,26 @@ const setUpPlayers = (playerOneObj, playerTwoObj) => {
 
 }
 
+//creates the four pieces for the players 
+const createPieces = playerObj => {
+    for (let i = 0; i < numPieces; i++) {
+        const piece = new PlayerPieces(0, -1, playerObj.color);
+        playerObj.addPieces(piece);
+    }
+}
+
+
+// will generate random number between 1-6 for dice
+const diceRoll = () => {
+    //random between 1-6
+    const randomNum = Math.floor(Math.random() * 6) + 1;
+    $dice.text(randomNum);
+
+    return randomNum;
+}
+
+// check to see if all current player has any piece on board
+// will return true if no piece on board and all piece is out of play
 const checkPlayerPieces = (obj) => {
     const pieces = obj.pieces;
 
@@ -206,6 +201,8 @@ const checkWhoseTurn = () => {
     }
 }
 
+// this function switches to the next player
+// future enhancement notes: change logic to handle for more than two players  
 const nextPlayerTurn = (prevNum) => {
     const turn = parseInt(checkWhoseTurn());
     if (turn === 0) {
@@ -215,7 +212,7 @@ const nextPlayerTurn = (prevNum) => {
 
         currentTurn = 1;
 
-        $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
+        $playerTurn.text(`${playersArray[currentTurn].name}'s turn!`);
         $dice.text("click here to roll")
             .css('color', `${playersArray[currentTurn].color}`);;
     } else if (turn === 1) {
@@ -225,7 +222,7 @@ const nextPlayerTurn = (prevNum) => {
 
         currentTurn = 0;
 
-        $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
+        $playerTurn.text(`${playersArray[currentTurn].name}'s turn!`);
         $dice.text("click here to roll")
             .css('color', `${playersArray[currentTurn].color}`);
     }
@@ -269,6 +266,39 @@ const movePiece = (num, obj, evt) => {
     addRemovePosition(parentId, newPos, color);
 }
 
+const findDivMovePosition = (color, currentDivId, rollNum) => {
+    currentDivId = parseInt(currentDivId);
+    let newDivPosition;
+    let currentIdx
+
+    if (color === 'red') {
+        // RED_PLAYER_PATH
+        currentIdx = RED_PLAYER_PATH.indexOf(currentDivId);
+
+        //add logic to make sure div can reach home
+        newDivPosition = pieceHomeCheck(currentIdx);
+
+        if (newDivPosition === -1) {
+            return -1
+        } else {
+            return (RED_PLAYER_PATH[newDivPosition]);
+        }
+    } else if (color === 'green') {
+        // GREEN_PLAYER_PATH
+        currentIdx = GREEN_PLAYER_PATH.indexOf(currentDivId);
+
+        //add logic to make sure div can reach home
+        newDivPosition = pieceHomeCheck(currentIdx);
+
+        if (newDivPosition === -1) {
+            return -1
+        } else {
+            return (GREEN_PLAYER_PATH[newDivPosition]);
+        }
+    }
+
+}
+
 const addRemovePosition = (oldPos, newPos, color) => {
     if (newPos === 0) {
         const currentPlayerObj = playersArray[checkWhoseTurn()];
@@ -291,11 +321,9 @@ const addRemovePosition = (oldPos, newPos, color) => {
         // if so run kill function to send it back to its base
         if (($(`#${newPos}`).children().length > 0)
             && !SAFE_SPOTS.includes(newPos)) {
-            console.log("call kill function");
-            //need to modify logic so it does not kill its own piece
+            // console.log("call kill function");
             killOtherPiece(newPos);
         }
-        //do not think I need to convert, note for future; 
         newPos = newPos.toString();
 
         /* below statement finds the first div with given combined  
@@ -347,41 +375,6 @@ const returnPlayerPiece = playerObj => {
     return;
 }
 
-
-const findDivMovePosition = (color, currentDivId, rollNum) => {
-    currentDivId = parseInt(currentDivId);
-    let newDivPosition;
-    let currentIdx
-
-    if (color === 'red') {
-        // RED_PLAYER_PATH
-        currentIdx = RED_PLAYER_PATH.indexOf(currentDivId);
-        // newDivPosition = currentIdx + rollNum;
-
-        //add logic to make sure div can reach home
-        newDivPosition = pieceHomeCheck(currentIdx);
-
-        if (newDivPosition === -1) {
-            return -1
-        } else {
-            return (RED_PLAYER_PATH[newDivPosition]);
-        }
-    } else if (color === 'green') {
-        // RED_PLAYER_PATH
-        currentIdx = GREEN_PLAYER_PATH.indexOf(currentDivId);
-        // newDivPosition = currentIdx + rollNum;
-        //add logic to make sure div can reach home
-        newDivPosition = pieceHomeCheck(currentIdx);
-
-        if (newDivPosition === -1) {
-            return -1
-        } else {
-            return (GREEN_PLAYER_PATH[newDivPosition]);
-        }
-    }
-
-}
-
 const pieceHomeCheck = idxPos => {
     if (idxPos >= 50) {
         const newPos = idxPos + rolledNum
@@ -407,7 +400,7 @@ const removePlayerPieces = (arrPieces) => {
 
 const addPieceFromBase = (playerObj, evt) => {
     if (evt.target.id === `${playerObj.color}-inner-base`) {
-        alert("click a piece");
+        return alert("click a piece");
     } else {
         $(`#${playerObj.start}`).append(`<div class="piece ${playerObj.color}-in play"></div>`);
         //removes the pieces once its in play
@@ -437,6 +430,7 @@ const updatePlayerPiece = playerObj => {
     }
 }
 
+//checks how many more pieces are left that have not reached home
 const numPieceInBoard = arrPiecesObj => {
     let count = 0;
 
@@ -447,8 +441,6 @@ const numPieceInBoard = arrPiecesObj => {
     });
     return count;
 }
-
-
 
 const displayWinner = playerObj => {
     gameFinished = 1;
@@ -487,11 +479,8 @@ const mainHandler = evt => {
     //create function that will set up the pieces and players when start game submit button is clicked 
     //if submit hit then will add the players name
     if (evt.target.getAttribute("type") === "submit") {
-        // && playersArray[0].name === ""
-        // && playersArray[1].name === "") {
-        console.log($playerOneName.val())
         if ($playerOneName.val() === ""
-            && $playerTwoName.val() === "") {
+            || $playerTwoName.val() === "") {
             alert('Please enter red and green player names');
             return;
         }
@@ -499,14 +488,13 @@ const mainHandler = evt => {
         startGameClicked = 1;
 
         currentTurn = checkWhoseTurn();
-        $playerTurn.text(`${playersArray[currentTurn].name} turn!`);
+        $playerTurn.text(`${playersArray[currentTurn].name}'s turn!`);
 
         return;
     }
 
     //create function that will roll dice
     if (evt.target.getAttribute("id") === "dice") {
-        // console.log("clicked dice");
         if (startGameClicked === 1) {
             if (rolledNum === null) {
                 rolledNum = diceRoll();
@@ -522,7 +510,7 @@ const mainHandler = evt => {
     const allOut = checkPlayerPieces(currentPlayerObj);
 
     if (rolledNum === null) {
-        alert("please roll (click) dice!");
+        alert("Please roll (click) dice!");
         return;
     }
 
@@ -534,9 +522,6 @@ const mainHandler = evt => {
 
     //add piece when player hits 6 and they click on add piece 
     if (evt.target.getAttribute("class") === `piece ${currentPlayerObj.color}-in`) {
-        console.log("rolled num: ", rolledNum)
-        // if (rolledNum === null) return;
-        // console.log(evt.target.getAttribute("class"))
         if (allOut && rolledNum === 6) {
             addPieceFromBase(currentPlayerObj, evt);
         } else if (rolledNum === 6) {
@@ -545,12 +530,11 @@ const mainHandler = evt => {
     }
 
     if (evt.target.getAttribute("class") === `piece ${currentPlayerObj.color}-in play`) {
-        // console.log(evt.target.getAttribute("class"));
-        // let test = findDivMovePosition(currentPlayerObj.color, evt.target.parentNode.getAttribute('id'), rolledNum);
-        // console.log(test);
+        //check the position of the clicked piece by getting the evt.target parent node id
         const piecePos = findDivMovePosition(currentPlayerObj.color, evt.target.parentNode.getAttribute('id'), rolledNum);
 
         //need to move to own function 
+        //below will check to see if player piece is in existing spot, if so then they cannot move to that spot and must pick another piece 
         if ($(`#${piecePos}`).children().length > 0
             && !SAFE_SPOTS.includes(piecePos)) {
             const piecePosParentClass = $(`#${piecePos}`).find('.play').attr('class');
@@ -573,7 +557,7 @@ const mainHandler = evt => {
             return;
         } else if (piecePos === -1) {
             const numInBoard = numPieceInBoard(currentPlayerObj.pieces);
-            //(numInBoard === 1  && rolledNum !==6) change arif
+
             if (allOut || numInBoard === 1) {
                 if (numInBoard === 1 && rolledNum == 6 && currentPlayerObj.remainPiecesInPlay > 1) {
                     alert("Cannot move that piece but you can put a piece in play! ")
@@ -592,13 +576,12 @@ const mainHandler = evt => {
                 const $allPieces = $(`.${currentPlayerObj.color}-in.play`)
                 const currentPlayerPieces = [];
 
-                console.log("got here");
+
                 $allPieces.each(function (idx) {
                     currentPlayerPieces.push(findDivMovePosition(currentPlayerObj.color, this.parentNode.getAttribute('id'), rolledNum));
 
                 });
-                console.log(currentPlayerPieces);
-                // console.log(total);
+
                 //checks through the array to see if the position returned is greater than zero which means another piece can be moved instead of the chosen one
                 //reference google .some vs .every
                 //used some cause just need one number to be greater than or equal to zero
@@ -610,15 +593,15 @@ const mainHandler = evt => {
                     const sum = currentPlayerPieces.reduce((curr, next) => curr + next);
 
                     if (rolledNum === 6 && currentPlayerObj.remainPiecesInPlay > 1 && sum > 0) {
-                        alert("no pieces to move but you can bring a piece in play from base")
+                        alert("No pieces to move but you can bring a piece in play from base")
 
                     } else {
-                        alert("no pieces to move, next player turn");
+                        alert("No pieces to move, next player turn");
                         nextPlayerTurn(rolledNum);
                         return;
                     }
                 } else if (hasMove) {
-                    alert("please pick another piece that can be moved");
+                    alert("Please pick another piece that can be moved");
                     return;
                 } else {
                     movePiece(rolledNum, currentPlayerObj, evt);
