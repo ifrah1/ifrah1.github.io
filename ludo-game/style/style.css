@@ -1,5 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@900&display=swap');
 
+:root {
+    /* color for pieces */
+    --red-pieces: red; 
+    --blue-pieces: #0000CD; 
+    --green-pieces: #7CFC00;
+    --yellow-pieces: yellow; 
+    /* color for base and home column */
+    --border-home-red:#CD5C5C;
+    --base-home-blue: #4169E1;
+    --border-home-green:  #32CD32; 
+    --border-home-yellow:  #FFD700; 
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,8 +20,11 @@
 }
 
 body {
-    background-color: #100c08;
+    /* background-color: #100c08; */
+    background-color: grey;
 }
+
+
 
 /* start of tag header */
 /* -------------------------------------------------------------*/
@@ -26,9 +42,26 @@ header {
 /* -------------------------------------------------------------*/
 /* end of header tag */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* start of main tag */
 /* -------------------------------------------------------------*/
-.main {
+/* .main {
     display: flex;
     justify-content:center;
     flex-wrap: wrap;
@@ -72,11 +105,11 @@ input[type=submit] {
     cursor: pointer;
     color: black;
     text-decoration: none;
-}
+} */
 
 /* start of game board div */
 /* -------------------------------------------------------------*/
-#game-board-wrapper {
+/* #game-board-wrapper {
     display: grid;
     grid-template-columns: repeat(15,50px);
     grid-template-rows: repeat(15,50px);
@@ -101,61 +134,61 @@ input[type=submit] {
     grid-template-rows: repeat(2,100px);
     align-items: center;
     border-radius: 50%;
-}
+} */
 
-#red-base {
+/* #red-base { */
     /*  start row / start column / end row / end column 
     */
-    grid-area: 1 / 1 /  7 /  7;
+    /* grid-area: 1 / 1 /  7 /  7;
     background-color: #CD5C5C;
     display: flex;
     justify-content: center;
     border-radius: 50%;
-}
+} */
 
-#blue-base { 
+/* #blue-base {  */
     /*  start row / start column / end row / end column 
     */
-    grid-area: 1 / 10 / 7 / 16; 
+    /* grid-area: 1 / 10 / 7 / 16; 
     background-color: #4169E1;
     display: flex;
     justify-content: center;
     border-radius: 50%;
-}
+} */
 
-#yellow-base {
+/* #yellow-base { */
     /*  start row / start column / end row / end column 
     */
-    grid-area: 10 / 1 / 16 / 7; 
+    /* grid-area: 10 / 1 / 16 / 7; 
     background-color: #FFD700;
     display: flex;
     justify-content: center;
     border-radius: 50%;
-}
+} */
 
-#green-base {
+/* #green-base { */
     /*  start row / start column / end row / end column 
     */
-    grid-area: 10 / 10 / 16 / 16; 
+    /* grid-area: 10 / 10 / 16 / 16; 
     background-color: #32CD32;
     display: flex;
     justify-content: center;
     border-radius: 50%;
-}
+} */
 
-#home {
+/* #home { */
         /*  start row / start column / end row / end column 
     */
-    grid-area: 7 / 7 / 10 / 10; 
+    /* grid-area: 7 / 7 / 10 / 10;  */
 
     /* creates the triangle effect  */
-    border-top: 75px solid #4169E1;
+    /* border-top: 75px solid #4169E1;
     border-right: 75px solid #32CD32; 
     border-bottom: 75px solid #FFD700; 
     border-left: 75px solid #CD5C5C;
-}
+} */
 
-.red-in {
+/* .red-in {
     background-color: red;
 }
 
@@ -169,10 +202,10 @@ input[type=submit] {
 
 .green-in {
     background-color: #7CFC00; 
-}
+} */
 
 /* home base and space colors*/
-.red-home {
+/* .red-home {
     background-color: #CD5C5C;
 }
 .blue-home {
@@ -184,12 +217,12 @@ input[type=submit] {
 }
 .yellow-home {
     background-color: #FFD700;
-}
+} */
 
 /* -------------------------------------------------------------*/
 /* end of game board div */
 
-#dice-menu{
+/* #dice-menu{
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -214,26 +247,26 @@ input[type=submit] {
 #prev-player-roll {
     margin: 30px 0 45px 0;
     font-size: 18px;
-}
+} */
 /* end of main tag*/
 /* -------------------------------------------------------------*/
 
-.piece {
+/* .piece {
     margin: 10px 10px 10px 35px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
     border: 3px solid#797070;
     cursor: pointer;
-}
+} */
 
 /*pieces that are in play*/
-.play{
+/* .play{
     display: flex;
     justify-content: center;
     margin: 0; 
     cursor: pointer;
-}
+} */
 
 footer{
     display: flex;
@@ -246,7 +279,7 @@ footer{
 
 /* start media  */
 /* -------------------------------------------------------------*/
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
     body {
         background-color: black;
     }
@@ -279,15 +312,15 @@ footer{
         flex-direction: column;
         align-items: center;
         margin: 10px 0 0 0px;
-    }
+    } */
 
-    #home{
+    /* #home{ */
         /*  start row / start column / end row / end column 
     */
-    grid-area: 7 / 7 / 10 / 10; 
+    /* grid-area: 7 / 7 / 10 / 10;  */
 
     /* creates the triangle effect  */
-    border-top: 49px solid #4169E1;
+    /* border-top: 49px solid #4169E1;
     border-right: 49px solid #32CD32; 
     border-bottom: 49px solid #FFD700; 
     border-left: 49px solid #CD5C5C;
@@ -317,4 +350,4 @@ footer{
         border-radius: 50%;
         border: 2px solid darkgray;
     }
-  }
+  } */
