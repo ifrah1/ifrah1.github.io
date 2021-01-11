@@ -640,6 +640,141 @@
 // $main.on('click', mainHandler);
 
 
+// new code -------------------------------------------------------
+//class to for player objects
+class Player {
+    constructor(name, color) {
+        //players name that was entered
+        this.name = name;
+        //holds the color of the player
+        this.color = color;
+        /*this lets us know which player turn it is
+        0 means not player turn and 1 means player turn
+        */
+        this.playerTurn = 0;
+        //holds obj of arrays of pieces for player (four pieces for now)
+        this.start = 0;
+        //how many pieces the player has left in play
+        this.remainPiecesInPlay = 4;
+        /*  0 means piece is out of play and needs a 6 to be in play
+            1 meaning piece is in play
+            -999 means pieces got to home and is done
+        */
+        this.pieces = [0, 0, 0, 0];  //change variable later
+
+    }
+}
+
+// CONSTANT VARIABLES 
+// *****************
+
+// Variables 
+// *****************
+let gameStarted = 0;  // 0 means game not started and 1 means 
+
+let playersObj = [];
+
+// jQuery variables 
+// *****************
+const $userMenu = $('#user-menu');
+const $startGame = $('#start-btn');
+const $main = $('main');
+//get input tags 
+const $playerNames = [
+    $('#player-one'),
+    $('#player-two'),
+    $('#player-three'),
+    $('#player-four')
+];
+
+/* 
+    make sure user entered two or more players for playing
+    also updates the players array to see which players are active:
+    sets it to 1 for active and leaves it zero if not
+    - return number of player input entered
+ */
+const numNamesInputted = () => {
+    let count = 0;
+
+    $playerNames.forEach((obj, idx) => {
+        if (obj.val() !== "") {
+            count += 1;
+        }
+    });
+    return count;
+}
+
+/*
+    creates all the player objects 
+*/
+const createPlayers = () => {
+    for (let obj of $playerNames) {
+        console.log(obj.val());
+        if (obj.val() !== '') {
+            const name = obj.val();
+            const color = checkPlayerColor(obj.attr('id'));
+            const player = new Player(obj.val(), color);
+            playersObj.push(player);
+        }
+    }
+    return;
+}
+
+/*
+    takes the player id and checks what player name was entered 
+    -returns the player color 
+*/
+const checkPlayerColor = playerId => {
+    switch (playerId) {
+        case 'player-one':
+            return 'red';
+        case 'player-two':
+            return 'blue';
+        case 'player-three':
+            return 'green';
+        case 'player-four':
+            return 'yellow';
+    }
+}
+
+/*
+    disappears the menu and brings the board to front 
+*/
+const bringBoard = () => {
+    $userMenu.fadeOut(800, () => {
+        $main.fadeIn(800);
+    });
+}
+
+/*
+    event handler function to handle start game 
+*/
+const startGameHandler = evt => {
+    evt.preventDefault();
+    console.log("start game handler hit");
+
+    const numNames = numNamesInputted();
+
+    if (numNames > 1) {
+        //creates the player objects 
+        createPlayers();
+        console.log(playersObj);
+        //sets the first player turn to 1
+        playersObj[0].playerTurn = 1;
+        //game has started and set up of objs done
+        gameStarted = 1;
+        //hid the user menu and bring the board to front 
+        bringBoard();
+        return;
+    } else {
+        return alert("Please enter at lease two players");
+    }
+    //testing to make sure event handler does not hit here
+    console.log("end of start game handler");
+}
+
+
+$startGame.on('click', startGameHandler);
 
 
 

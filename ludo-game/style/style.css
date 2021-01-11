@@ -28,24 +28,6 @@ body {
     height: 100vh;
 }
 
-
-/* start of tag header */
-/* -------------------------------------------------------------*/
-header {
-   display: flex;  
-   justify-content: center;
-   align-items: center;
-   font-family: 'Big Shoulders Stencil Text', cursive;
-}
-
-#game-title {
-    margin: 20px;
-    font-size: 80px;
-    color: white; 
-}
-/* -------------------------------------------------------------*/
-/* end of header tag */
-
 /* start of user-menu tag */
 /* -------------------------------------------------------------*/
 #user-menu {
@@ -56,12 +38,19 @@ header {
     /* background-color: whitesmoke; */
 }
 
+#game-title {
+    margin: 10px;
+    font-size: 80px;
+    color: white; 
+    font-family: 'Big Shoulders Stencil Text', cursive;
+}
+
 .menu-title {
     margin: 10px;
     color: #fbfdfb;
 }
 
-form {
+#user-menu-form {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -71,7 +60,7 @@ form {
     width: 200px; 
 }
 
-form:hover {
+#user-menu-form:hover {
     opacity: 1;
 }
 
@@ -85,13 +74,16 @@ input[type=text] {
     border-radius: 15%;
 }
 
-input[type=submit] {
+#start-btn {
     border-radius: 15%;
     cursor: pointer;
     color: white;
     text-decoration: none;
     background-color: black;
+    height: 3.5vh;
 } 
+
+/* colors for form */
 ::placeholder {
     color: black;
   }
