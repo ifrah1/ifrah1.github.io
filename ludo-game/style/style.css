@@ -31,7 +31,8 @@ body {
 /* start of user-menu tag */
 /* -------------------------------------------------------------*/
 #user-menu {
-    display: flex;
+    /* display: flex; */
+    display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -104,18 +105,65 @@ input[type=text] {
 /* -------------------------------------------------------------*/
 /* end of usr-menu tag */
 
-.main{
-    /* this will be turned on by JS */
-    display: none;
-    background-color: red;
-    width: 200px;
-    height: 200px;
+
+#dice-board-container {
+    display: flex;
+    /* display: none; */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+} 
+
+/* start of dice menu styling */
+/* -------------------------------------------------------------*/
+
+#dice-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+    margin: 20px;
+}
+#prev-player-roll {
+    font-size: 18px;
+    color: white;
+    margin: 10px;
+}
+
+#dice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100px;
+    width: 100px;
+    background-color: white;
+}
+
+/* -------------------------------------------------------------*/
+/* end of dice menu */
+
+/* start of board styling */
+/* -------------------------------------------------------------*/
+
+#game-board-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3,250px);
+    grid-template-rows: repeat(3,200px);
+    margin: 0px 0 0 55px;
 }
 
 .space {
-    width: 1px;
-    height: 1px;
+    background-color: #F0FFFF;
+    border: 0.1px solid;
+    display: flex;
+    align-items: center;
+    opacity: 0.95;
 }
+
+/* -------------------------------------------------------------*/
+/* end of board board styling */
+
 
 footer{
     display: flex;

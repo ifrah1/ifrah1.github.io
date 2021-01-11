@@ -678,7 +678,7 @@ let playersObj = [];
 // *****************
 const $userMenu = $('#user-menu');
 const $startGame = $('#start-btn');
-const $main = $('main');
+const $diceBoardContainer = $('#dice-board-container');
 //get input tags 
 const $playerNames = [
     $('#player-one'),
@@ -742,7 +742,9 @@ const checkPlayerColor = playerId => {
 */
 const bringBoard = () => {
     $userMenu.fadeOut(800, () => {
-        $main.fadeIn(800);
+        $diceBoardContainer.fadeIn(800)
+            .css('display', 'flex');
+
     });
 }
 
