@@ -7,10 +7,10 @@
     --green-pieces: #7CFC00;
     --yellow-pieces: yellow; 
     /* color for base and home column */
-    --border-home-red:#CD5C5C;
+    --base-home-red:#CD5C5C;
     --base-home-blue: #4169E1;
-    --border-home-green:  #32CD32; 
-    --border-home-yellow:  #FFD700; 
+    --base-home-green:  #32CD32; 
+    --base-home-yellow:  #FFD700; 
 }
 
 * {
@@ -20,10 +20,13 @@
 }
 
 body {
-    /* background-color: #100c08; */
-    background-color: grey;
+    background-color: #100c08;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
 }
-
 
 
 /* start of tag header */
@@ -31,6 +34,7 @@ body {
 header {
    display: flex;  
    justify-content: center;
+   align-items: center;
    font-family: 'Big Shoulders Stencil Text', cursive;
 }
 
@@ -42,9 +46,94 @@ header {
 /* -------------------------------------------------------------*/
 /* end of header tag */
 
+/* start of user-menu tag */
+/* -------------------------------------------------------------*/
+#user-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* background-color: whitesmoke; */
+}
 
+.menu-title {
+    margin: 10px;
+    color: #fbfdfb;
+}
 
+form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color:#778899;
+    opacity: 0.8;
+    border-radius: 5%;
+    width: 200px; 
+}
 
+form:hover {
+    opacity: 1;
+}
+
+input {
+    margin: 10px;
+    color: white;
+}
+
+input[type=text] {
+    /* border:  2px solid white; */
+    border-radius: 15%;
+}
+
+input[type=submit] {
+    border-radius: 15%;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+    background-color: black;
+} 
+::placeholder {
+    color: black;
+  }
+/* color for input menu players */
+#player-one {
+    background-color:red;
+}
+#player-two {
+    background-color: var(--base-home-blue);
+}
+#player-three {
+    background-color: var(--base-home-green);
+}
+#player-four {
+    background-color: var(--base-home-yellow);
+}
+
+/* -------------------------------------------------------------*/
+/* end of usr-menu tag */
+
+.main{
+    /* this will be turned on by JS */
+    display: none;
+    background-color: red;
+    width: 200px;
+    height: 200px;
+}
+
+.space {
+    width: 1px;
+    height: 1px;
+}
+
+footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2vh;
+    color: white;
+    margin: 20px;
+    /* background-color: whitesmoke; */
+}
 
 
 
@@ -268,14 +357,14 @@ input[type=submit] {
     cursor: pointer;
 } */
 
-footer{
+/* footer{
     display: flex;
     justify-content: center;
     height: 10vh;
     color: white;
     margin: 20px;
     height: 1vh;
-}
+} */
 
 /* start media  */
 /* -------------------------------------------------------------*/
