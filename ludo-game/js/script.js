@@ -799,13 +799,13 @@ const checkAllOut = piecesArr => {
     switches to next player 
 */
 const nextPlayerTurn = (currentIdx) => {
-    console.log(playersObj.length)
+    //change current player turn to 0 
+    playersObj[currentIdx].playerTurn = 0;
+    //check if current player is last player 
     if (currentIdx === (playersObj.length - 1)) {
-        playersObj[currentIdx].playerTurn = 0;
         playersObj[0].playerTurn = 1;
         return;
-    } else {
-        playersObj[currentIdx].playerTurn = 0;
+    } else { //if not last player then just go one up the array
         playersObj[currentIdx + 1].playerTurn = 1;
         return;
     }
