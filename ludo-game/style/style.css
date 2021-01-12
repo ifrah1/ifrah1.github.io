@@ -31,8 +31,8 @@ body {
 /* start of user-menu tag */
 /* -------------------------------------------------------------*/
 #user-menu {
-    /* display: flex; */
-    display: none;
+    display: flex;
+    /* display: none; */
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -106,8 +106,8 @@ input[type=text] {
 
 
 #dice-board-container {
-    display: flex;
-    /* display: none; */
+    /* display: flex; */
+    display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -129,6 +129,10 @@ input[type=text] {
     margin: 10px;
 }
 
+#player-turn {
+    color: white;
+}
+
 #dice {
     display: flex;
     justify-content: center;
@@ -137,6 +141,7 @@ input[type=text] {
     height: 100px;
     width: 100px;
     background-color: white;
+    border: 3px solid;
     cursor: pointer;
 }
 
@@ -264,7 +269,7 @@ input[type=text] {
     border: 3px solid#797070;
     cursor: pointer;
     /* javascript will add this */
-    /* animation: pulse 2s infinite; */
+    animation: pulse 1s infinite;
 }
 
 .play{
@@ -290,6 +295,9 @@ footer{
 }
 
 /* animations */
+/* source; 
+    https://www.florin-pop.com/blog/2019/03/css-pulse-effect/ 
+*/
 @keyframes pulse {
 	0% {
 		transform: scale(0.95);
