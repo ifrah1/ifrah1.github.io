@@ -672,7 +672,7 @@ class Player {
 // *****************
 let gameStarted = 0;  // 0 means game not started and 1 means 
 
-let playersObj = [];
+let arrPlayerObj = [];
 
 // jQuery variables 
 // *****************
@@ -682,6 +682,7 @@ const $diceBoardContainer = $('#dice-board-container');
 const $dice = $('#dice');
 const $outPieces = $('.piece');
 const $playerTurn = $('#player-turn');
+const $prevPlayerRoll = $('#prev-player-roll');
 //get input tags 
 const $playerNames = [
     $('#player-one'),
@@ -716,7 +717,7 @@ const createPlayers = () => {
             const name = obj.val();
             const color = checkPlayerColor(obj.attr('id'));
             const player = new Player(obj.val(), color);
-            playersObj.push(player);
+            arrPlayerObj.push(player);
         }
     }
     return;
@@ -751,22 +752,25 @@ const bringBoard = () => {
 }
 
 /*
-displays which player turn it is 
+display for dice and player turn info 
 */
-const displayWhoseTurn = obj => {
-    $playerTurn.text(`${obj.name}'s turn!`)
+const displayWhoseTurn = (obj) => {
+    $playerTurn.text(`${obj.name}'s turn!`);
+
     $dice.text('click here to roll OR press space bar')
         .css('color', `var(--${obj.color}-pieces)`);
+
     return;
 }
-
-/*
-displays current player rolled number 
-*/
-const displayDiceRoll = (rolledNum, color) => {
+const displayDiceNum = (color, rolledNum) => {
     $dice.text(rolledNum)
         .css('color', `var(--${color}-pieces)`);
     return;
+}
+const displayPrevPlayer = (name, rolledNum) => {
+    $prevPlayerRoll.text(`${name} rolled a ${rolledNum}!`);
+    return;
+
 }
 
 /*
@@ -780,8 +784,8 @@ const generateRanNum = () => {
     loop through the players object array and see whose turn it is
 */
 const checkTurn = () => {
-    for (let i in playersObj) {
-        if (playersObj[i].playerTurn === 1) {
+    for (let i in arrPlayerObj) {
+        if (arrPlayerObj[i].playerTurn === 1) {
             return parseInt(i);
         }
     }
@@ -800,13 +804,13 @@ const checkAllOut = piecesArr => {
 */
 const nextPlayerTurn = (currentIdx) => {
     //change current player turn to 0 
-    playersObj[currentIdx].playerTurn = 0;
+    arrPlayerObj[currentIdx].playerTurn = 0;
     //check if current player is last player 
-    if (currentIdx === (playersObj.length - 1)) {
-        playersObj[0].playerTurn = 1;
+    if (currentIdx === (arrPlayerObj.length - 1)) {
+        arrPlayerObj[0].playerTurn = 1;
         return;
     } else { //if not last player then just go one up the array
-        playersObj[currentIdx + 1].playerTurn = 1;
+        arrPlayerObj[currentIdx + 1].playerTurn = 1;
         return;
     }
 }
@@ -824,11 +828,11 @@ const startGameHandler = evt => {
         //creates the player objects 
         createPlayers();
         //sets the first player turn to 1
-        playersObj[0].playerTurn = 1;
+        arrPlayerObj[0].playerTurn = 1;
         //game has started and set up of objs done
         gameStarted = 1;
         //display whose turn
-        displayWhoseTurn(playersObj[0]);
+        displayWhoseTurn(arrPlayerObj[0]);
         //hid the user menu and bring the board to front 
         bringBoard();
         return;
@@ -842,19 +846,32 @@ const startGameHandler = evt => {
 const diceHandler = evt => {
     evt.preventDefault();
     console.log("hit dice handler");
+    console.log(evt.target);
+
     //check which player turn it is
     const currentIdx = checkTurn();
-    const playerObj = playersObj[currentIdx];
+    const playerObj = arrPlayerObj[currentIdx];
+    const currName = playerObj.name;
+    const currColor = playerObj.color;
     //get a random number for user 
     const ranNum = generateRanNum();
-    //display what the player rolled is
-    displayDiceRoll(ranNum, playerObj.color);
-    console.log(playersObj, playerObj);
-
+    //grab to see if player has all pieces out of play
     const allOut = checkAllOut(playerObj.pieces);
 
+    //display what the player rolled is
+    // displayDiceRoll(ranNum, playerObj.color, playerObj.name);
+    console.log(arrPlayerObj, playerObj);
+    console.log(ranNum);
+
+
     if (ranNum < 6 && allOut <= 0) {
+        displayPrevPlayer(currName, ranNum);
         nextPlayerTurn(currentIdx);
+        displayWhoseTurn(arrPlayerObj[checkTurn()]);
+        return;
+    } else if (ranNum === 6) {
+        console.log("rolled six");
+        displayDiceNum(currColor, ranNum);
         return;
     }
     //add logic to see what was rolled 
@@ -868,9 +885,9 @@ $startGame.on('click', startGameHandler);
 $dice.on('click', diceHandler);
 //handler so user can press space to roll the dice also
 $('body').keypress(evt => {
-    console.log("pressed space");
+    console.log("pressed space", evt);
     if (evt.which === 32 && gameStarted === 1) {
-        diceHandler(evt)
+        diceHandler(evt);
         return;
     }
 })
