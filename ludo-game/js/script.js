@@ -667,6 +667,74 @@ class Player {
 
 // CONSTANT VARIABLES 
 // *****************
+const RED_PLAYER_PATH = [
+    20, 21, 22, 23, 24,
+    16, 13, 10, 7, 4,
+    1, 2, 3,
+    6, 9, 12, 15, 18,
+    25, 26, 27, 28, 29,
+    30, 42, 54,
+    53, 52, 51, 50, 49,
+    57, 60, 63, 66, 69,
+    72, 71, 70,
+    67, 64, 61, 58, 55,
+    48, 47, 46, 45, 44,
+    43, 31,
+    32, 33, 34, 35, 36,
+    0
+];
+
+const BLUE_PLAYER_PATH = [
+    6, 9, 12, 15, 18,
+    25, 26, 27, 28, 29,
+    30, 42, 54,
+    53, 52, 51, 50, 49,
+    57, 60, 63, 66, 69,
+    72, 71, 70,
+    67, 64, 61, 58, 55,
+    48, 47, 46, 45, 44,
+    43, 31, 19,
+    20, 21, 22, 23, 24,
+    16, 13, 10, 7, 4,
+    1, 2,
+    5, 8, 11, 14, 17,
+    0
+];
+
+const GREEN_PLAYER_PATH = [
+    53, 52, 51, 50, 49,
+    57, 60, 63, 66, 69,
+    72, 71, 70,
+    67, 64, 61, 58, 55,
+    48, 47, 46, 45, 44,
+    43, 31, 19,
+    20, 21, 22, 23, 24,
+    16, 13, 10, 7, 4,
+    1, 2, 3,
+    6, 9, 12, 15, 18,
+    25, 26, 27, 28, 29,
+    30, 42,
+    41, 40, 39, 38, 37,
+    0
+];
+
+
+const YELLOW_PLAYER_PATH = [
+    67, 64, 61, 58, 55,
+    48, 47, 46, 45, 44,
+    43, 31, 19,
+    20, 21, 22, 23, 24,
+    16, 13, 10, 7, 4,
+    1, 2, 3,
+    6, 9, 12, 15, 18,
+    25, 26, 27, 28, 29,
+    30, 42, 54,
+    53, 52, 51, 50, 49,
+    57, 60, 63, 66, 69,
+    72, 71,
+    68, 65, 62, 59, 56,
+    0
+];
 
 // Variables 
 // *****************
@@ -679,6 +747,7 @@ let arrPlayerObj = [];
 const $userMenu = $('#user-menu');
 const $startGame = $('#start-btn');
 const $diceBoardContainer = $('#dice-board-container');
+const $gameBoardWrapper = $('#game-board-wrapper');
 const $dice = $('#dice');
 const $outPieces = $('.piece');
 const $playerTurn = $('#player-turn');
@@ -760,7 +829,6 @@ const displayWhoseTurn = (obj) => {
     $dice.text('click here to roll')
         .css('color', `var(--${obj.color}-pieces)`);
 
-    return;
 }
 const displayDiceNum = (color, rolledNum) => {
     $dice.text(rolledNum)
@@ -891,6 +959,12 @@ const diceHandler = evt => {
 
 }
 
+const gameBoardHandler = evt => {
+    evt.preventDefault();
+    console.log(evt.target.getAttribute('class'));
+    console.log(evt.target.parentNode);
+}
+
 $startGame.on('click', startGameHandler);
 
 $dice.on('click', diceHandler);
@@ -904,6 +978,7 @@ $dice.on('click', diceHandler);
 //     }
 // });
 
+$gameBoardWrapper.on('click', gameBoardHandler);
 
 
 
