@@ -269,7 +269,7 @@ input[type=text] {
     border: 3px solid#797070;
     cursor: pointer;
     /* javascript will add this */
-    animation: pulse 1s infinite;
+    /* animation: pulse 1s infinite; */
 }
 
 .play{

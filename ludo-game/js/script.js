@@ -783,9 +783,9 @@ const numNamesInputted = () => {
 const createPlayers = () => {
     for (let obj of $playerNames) {
         if (obj.val() !== '') {
-            const name = obj.val();
             const color = checkPlayerColor(obj.attr('id'));
             const player = new Player(obj.val(), color);
+            player.start = addPlayerStartPos(color);
             arrPlayerObj.push(player);
         }
     }
@@ -806,6 +806,19 @@ const checkPlayerColor = playerId => {
             return 'green';
         case 'player-four':
             return 'yellow';
+    }
+}
+
+const addPlayerStartPos = color => {
+    switch (color) {
+        case 'red':
+            return 20;
+        case 'blue':
+            return 6;
+        case 'green':
+            return 53;
+        case 'yellow':
+            return 67;
     }
 }
 
@@ -880,6 +893,39 @@ const nextPlayerTurn = (currentIdx) => {
     } else { //if not last player then just go one up the array
         arrPlayerObj[currentIdx + 1].playerTurn = 1;
         return;
+    }
+}
+
+/*
+    adds a piece in play once player clicks it from their base
+*/
+const addPieceFromBase = (playerObj, evt) => {
+    console.log("hit addPiece", playerObj.start, playerObj.color)
+    $(`#${playerObj.start}`).append(`<div class="piece ${playerObj.color}-in play"></div>`);
+    //removes the pieces once its in play
+    evt.target.remove();
+    return;
+}
+
+/*
+    update player pieces based on 
+    - 0 = out of play 
+    - 999 = player piece made home is done
+    - 1 = in play and on board 
+*/
+const updatePlayerPiece = (playerObj, status) => {
+    for (let idx in playerObj.pieces) {
+        console.log(idx);
+        if (playerObj.pieces[idx] === 0 && status === 1) {
+            playerObj.pieces[idx] = 1;
+            return;
+        } else if (playerObj.pieces[idx] === 1 && status === 0) {
+            playerObj.pieces[idx] = 0;
+            return;
+        } else if (status === -999) {
+            playerObj.pieces[idx] = -999;
+            playerObj.remainPiecesInPlay -= 1
+        }
     }
 }
 
@@ -961,8 +1007,39 @@ const diceHandler = evt => {
 
 const gameBoardHandler = evt => {
     evt.preventDefault();
-    console.log(evt.target.getAttribute('class'));
-    console.log(evt.target.parentNode);
+
+    const evtClass = evt.target.getAttribute("class");
+    // check rolled number
+    const rolledNum = parseInt($dice.text());
+    //check which player turn it is
+    const currentIdx = checkTurn();
+    const playerObj = arrPlayerObj[currentIdx];
+
+    //exit if player has not rolled dice yet and clicks on piece 
+    if (isNaN(rolledNum)) {
+        return alert("please roll dice");
+    }
+    //exit if player does not click their color piece 
+    if (evtClass !== `piece ${playerObj.color}-in`
+        && evtClass !== `piece ${playerObj.color}-in play`) {
+        return alert("please click on a your piece");
+    }
+
+    //add piece if player rolled a six 
+    if (rolledNum === 6 && evtClass === `piece ${playerObj.color}-in`) {
+        addPieceFromBase(playerObj, evt);
+        updatePlayerPiece(playerObj, 1);
+        displayPrevPlayer(playerObj.name, rolledNum);
+        displayWhoseTurn(arrPlayerObj[checkTurn()]);
+        return;
+    }
+
+    //move a click piece 
+    if (evtClass === `piece ${playerObj.color}-in play`) {
+
+    }
+
+
 }
 
 $startGame.on('click', startGameHandler);
