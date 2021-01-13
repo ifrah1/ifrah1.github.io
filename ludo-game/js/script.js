@@ -757,7 +757,7 @@ display for dice and player turn info
 const displayWhoseTurn = (obj) => {
     $playerTurn.text(`${obj.name}'s turn!`);
 
-    $dice.text('click here to roll OR press space bar')
+    $dice.text('click here to roll')
         .css('color', `var(--${obj.color}-pieces)`);
 
     return;
@@ -846,35 +846,46 @@ const startGameHandler = evt => {
 const diceHandler = evt => {
     evt.preventDefault();
     console.log("hit dice handler");
-    console.log(evt.target);
+    const prevRolledNum = parseInt(evt.target.innerHTML);
 
     //check which player turn it is
     const currentIdx = checkTurn();
     const playerObj = arrPlayerObj[currentIdx];
     const currName = playerObj.name;
     const currColor = playerObj.color;
-    //get a random number for user 
-    const ranNum = generateRanNum();
     //grab to see if player has all pieces out of play
     const allOut = checkAllOut(playerObj.pieces);
+    let ranNum;
+
+    //get a random number for user if they did not roll
+    //if they did then keep the prevNum
+    if (isNaN(prevRolledNum)) {
+        ranNum = generateRanNum();
+    } else if (prevRolledNum === 6) {
+        return alert("already rolled");
+    } else {
+        ranNum = prevRolledNum;
+    }
+
+    //check to make sure user rolls 
 
     //display what the player rolled is
     // displayDiceRoll(ranNum, playerObj.color, playerObj.name);
     console.log(arrPlayerObj, playerObj);
     console.log(ranNum);
 
-
+    //statement to check new number
+    //if user rolls less than 6 and all pieces are out then next player turn
     if (ranNum < 6 && allOut <= 0) {
         displayPrevPlayer(currName, ranNum);
         nextPlayerTurn(currentIdx);
         displayWhoseTurn(arrPlayerObj[checkTurn()]);
         return;
-    } else if (ranNum === 6) {
-        console.log("rolled six");
+    } else {
+        console.log(ranNum);
         displayDiceNum(currColor, ranNum);
         return;
     }
-    //add logic to see what was rolled 
 
     console.log("end of dice handler");
 
@@ -883,14 +894,15 @@ const diceHandler = evt => {
 $startGame.on('click', startGameHandler);
 
 $dice.on('click', diceHandler);
+//will add later
 //handler so user can press space to roll the dice also
-$('body').keypress(evt => {
-    console.log("pressed space", evt);
-    if (evt.which === 32 && gameStarted === 1) {
-        diceHandler(evt);
-        return;
-    }
-})
+// $('body').keypress(evt => {
+//     console.log("pressed space", evt);
+//     if (evt.which === 32 && gameStarted === 1) {
+//         diceHandler(evt);
+//         return;
+//     }
+// });
 
 
 
