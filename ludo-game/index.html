@@ -12,18 +12,26 @@
 </head>
 
 <body>
-    <header>
+    <div id="user-menu">
         <h1 id="game-title">LUDO</h1>
-    </header>
+        <!-- <h2 class="menu-title">Start Menu</h2> -->
+        <form id="user-menu-form">
+            <input type="text" id="player-one" placeholder="Player One Name (Red)">
+            <input type="text" id="player-two" placeholder="Player Two Name (Blue)">
+            <input type="text" id="player-three" placeholder="Player Three Name (Green)">
+            <input type="text" id="player-four" placeholder="Player Four Name (Yellow)">
+            <input type="submit" id="start-btn" value="Start Game">
+        </form>
+    </div>
 
-    <main class="main">
-        <div id="user-menu">
-            <h2 class="menu-title">Start menu</h2>
-            <form>
-                <input type="text" id="player-one" placeholder="Player One Name (Red)">
-                <input type="text" id="player-two" placeholder="Player Two Name (Green)">
-                <input type="submit" value="Start Game">
-            </form>
+    <div id="dice-board-container">
+        <div id="dice-menu">
+            <h2 class="menu-title">Roll & Turn Info:</h2>
+            <p id="prev-player-roll">Previous player roll</p>
+            <h3 id="player-turn">Test</h3>
+            <div id="dice">
+                click here to roll
+            </div>
         </div>
         <div id="game-board-wrapper">
             <!-- each player base -->
@@ -148,16 +156,7 @@
             <div id="71" class="space"></div>
             <div id="72" class="space"></div>
         </div>
-
-        <div id="dice-menu">
-            <h2 class="menu-title">Roll & Turn Info</h2>
-            <p id="prev-player-roll"></p>
-            <h3 id="player-turn"></h3>
-            <div id="dice">
-                click here to roll
-            </div>
-        </div>
-    </main>
+    </div>
 
     <footer>
         <h3>©2021 AR</h3>

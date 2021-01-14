@@ -1,5 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@900&display=swap');
 
+:root {
+    /* color for pieces */
+    --red-pieces: red; 
+    --blue-pieces: #0000CD; 
+    --green-pieces: #7CFC00;
+    --yellow-pieces: #ffe23d; 
+    /* color for base and home column */
+    --base-home-red:#CD5C5C;
+    --base-home-blue: #4169E1;
+    --base-home-green:  #32CD32; 
+    --base-home-yellow:  #FFD700; 
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,79 +21,140 @@
 
 body {
     background-color: #100c08;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
 }
 
-/* start of tag header */
+/* start of user-menu tag */
 /* -------------------------------------------------------------*/
-header {
-   display: flex;  
-   justify-content: center;
-   font-family: 'Big Shoulders Stencil Text', cursive;
+#user-menu {
+    display: flex;
+    /* display: none; */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 #game-title {
-    margin: 20px;
+    margin: 10px;
     font-size: 80px;
     color: white; 
-}
-/* -------------------------------------------------------------*/
-/* end of header tag */
-
-/* start of main tag */
-/* -------------------------------------------------------------*/
-.main {
-    display: flex;
-    justify-content:center;
-    flex-wrap: wrap;
-}
-
-
-#user-menu {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+    font-family: 'Big Shoulders Stencil Text', cursive;
 }
 
 .menu-title {
     margin: 10px;
-    color: #F0FFF0;
+    color: #fbfdfb;
 }
 
-form {
+#user-menu-form {
     display: flex;
     justify-content: center;
     flex-direction: column;
     background-color:#778899;
-    opacity: 0.5;
-    border-radius: 5%
+    opacity: 0.8;
+    border-radius: 5%;
+    width: 200px; 
 }
 
-form:hover {
-    opacity: 0.8;
+#user-menu-form:hover {
+    opacity: 1;
 }
 
 input {
     margin: 10px;
+    color: white;
 }
 
 input[type=text] {
-    border:  2px solid white;
+    /* border:  2px solid white; */
     border-radius: 15%;
-}
-input[type=submit] {
-    border-radius: 15%;
-    cursor: pointer;
-    color: black;
-    text-decoration: none;
 }
 
-/* start of game board div */
+#start-btn {
+    border-radius: 15%;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+    background-color: black;
+    height: 3.5vh;
+} 
+
+/* colors for form */
+::placeholder {
+    color: black;
+  }
+/* color for input menu players */
+#player-one {
+    background-color:red;
+}
+#player-two {
+    background-color: var(--base-home-blue);
+}
+#player-three {
+    background-color: var(--base-home-green);
+}
+#player-four {
+    background-color: var(--base-home-yellow);
+}
+
 /* -------------------------------------------------------------*/
+/* end of usr-menu tag */
+
+
+#dice-board-container {
+    /* display: flex; */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+} 
+
+/* start of dice menu styling */
+/* -------------------------------------------------------------*/
+
+#dice-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+    margin: 10px;
+}
+#prev-player-roll {
+    font-size: 18px;
+    color: white;
+    margin: 5px;
+}
+
+#player-turn {
+    color: white;
+}
+
+#dice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100px;
+    width: 100px;
+    background-color: white;
+    border: 3px solid;
+    cursor: pointer;
+}
+
+/* -------------------------------------------------------------*/
+/* end of dice menu */
+
+/* start of board styling */
+/* -------------------------------------------------------------*/
+
 #game-board-wrapper {
     display: grid;
-    grid-template-columns: repeat(15,50px);
-    grid-template-rows: repeat(15,50px);
-    margin: 0px 0 0 55px;
+    grid-template-columns: repeat(15,46px);
+    grid-template-rows: repeat(15,46px);
 }
 
 .space {
@@ -107,7 +181,7 @@ input[type=submit] {
     /*  start row / start column / end row / end column 
     */
     grid-area: 1 / 1 /  7 /  7;
-    background-color: #CD5C5C;
+    background-color: var(--base-home-red);
     display: flex;
     justify-content: center;
     border-radius: 50%;
@@ -117,7 +191,7 @@ input[type=submit] {
     /*  start row / start column / end row / end column 
     */
     grid-area: 1 / 10 / 7 / 16; 
-    background-color: #4169E1;
+    background-color: var(--base-home-blue);
     display: flex;
     justify-content: center;
     border-radius: 50%;
@@ -127,7 +201,7 @@ input[type=submit] {
     /*  start row / start column / end row / end column 
     */
     grid-area: 10 / 1 / 16 / 7; 
-    background-color: #FFD700;
+    background-color: var(--base-home-yellow);
     display: flex;
     justify-content: center;
     border-radius: 50%;
@@ -137,7 +211,7 @@ input[type=submit] {
     /*  start row / start column / end row / end column 
     */
     grid-area: 10 / 10 / 16 / 16; 
-    background-color: #32CD32;
+    background-color: var(--base-home-green);
     display: flex;
     justify-content: center;
     border-radius: 50%;
@@ -149,74 +223,43 @@ input[type=submit] {
     grid-area: 7 / 7 / 10 / 10; 
 
     /* creates the triangle effect  */
-    border-top: 75px solid #4169E1;
-    border-right: 75px solid #32CD32; 
-    border-bottom: 75px solid #FFD700; 
-    border-left: 75px solid #CD5C5C;
+    border-top: 69px solid var(--base-home-blue);
+    border-right: 69px solid var(--base-home-green); 
+    border-bottom: 69px solid var(--base-home-yellow); 
+    border-left: 69px solid var(--base-home-red);
 }
 
+/* pieces color */
 .red-in {
-    background-color: red;
+    background-color: var(--red-pieces);
 }
 
 .blue-in {
-    background-color: #0000CD; 
+    background-color: var(--blue-pieces); 
 }
 
 .yellow-in {
-    background-color: yellow; 
+    background-color: var(--yellow-pieces); 
 }
 
 .green-in {
-    background-color: #7CFC00; 
+    background-color: var(--green-pieces); 
 }
 
 /* home base and space colors*/
 .red-home {
-    background-color: #CD5C5C;
+    background-color: var(--base-home-red);
 }
 .blue-home {
-    background-color: #4169E1;
+    background-color: var(--base-home-blue);
 }
 
 .green-home {
-    background-color: #32CD32; 
+    background-color: var(--base-home-green); 
 }
 .yellow-home {
-    background-color: #FFD700;
+    background-color: var(--base-home-yellow);
 }
-
-/* -------------------------------------------------------------*/
-/* end of game board div */
-
-#dice-menu{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin: 0 0 0 55px;
-    color: #F0FFF0;
-}
-
-#dice{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #E6E6FA;
-    border: 3px solid;
-    margin: 10px;
-    width: 100px;
-    height: 100px;
-    cursor: pointer;
-    color: black;
-}
-
-#prev-player-roll {
-    margin: 30px 0 45px 0;
-    font-size: 18px;
-}
-/* end of main tag*/
-/* -------------------------------------------------------------*/
 
 .piece {
     margin: 10px 10px 10px 35px;
@@ -225,85 +268,85 @@ input[type=submit] {
     border-radius: 50%;
     border: 3px solid#797070;
     cursor: pointer;
+    /* javascript will add this */
+    /* animation: pulse 1s infinite; */
 }
 
-/*pieces that are in play*/
 .play{
     display: flex;
-    justify-content: center;
     margin: 0; 
     cursor: pointer;
+    /* javascript will add this */
+    /* animation: pulse 2s infinite; */
 }
+
+/* -------------------------------------------------------------*/
+/* end of board board styling */
+
 
 footer{
     display: flex;
     justify-content: center;
-    height: 10vh;
+    align-items: center;
+    height: 2vh;
     color: white;
     margin: 20px;
-    height: 1vh;
+    /* background-color: whitesmoke; */
 }
 
-/* start media  */
-/* -------------------------------------------------------------*/
-@media screen and (max-width: 600px) {
-    body {
-        background-color: black;
+/* animations */
+/* source; 
+    https://www.florin-pop.com/blog/2019/03/css-pulse-effect/ 
+*/
+@keyframes pulse {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+	}
+
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+	}
+}
+
+
+ @media screen and (max-width: 600px) { 
+    #dice-menu {
+        margin:100px 0 0 75px;
     }
-    
     #game-board-wrapper {
         display: grid;
-        grid-template-columns: repeat(15,33px);
-        grid-template-rows: repeat(15,33px);
-        margin: 15px 0 0 0px;
-        order: 1;
-    
+        grid-template-columns: repeat(15,30px);
+        grid-template-rows: repeat(15,30px);
+        margin: 20px 0 0 75px;
     }
 
-    .main{
-        margin: 10px 10px 10px 0;
-        display: flex;
-        justify-content:center;
-        flex-direction: column;
-    }
-    
-    #user-menu{
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-    }
-
-    #dice-menu{
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        margin: 10px 0 0 0px;
-    }
-
-    #home{
-        /*  start row / start column / end row / end column 
-    */
-    grid-area: 7 / 7 / 10 / 10; 
-
+    #home{ 
     /* creates the triangle effect  */
-    border-top: 49px solid #4169E1;
-    border-right: 49px solid #32CD32; 
-    border-bottom: 49px solid #FFD700; 
-    border-left: 49px solid #CD5C5C;
+     border-top: 45px solid var(--base-home-blue);
+    border-right: 45px solid var(--base-home-green); 
+    border-bottom: 45px solid var(--base-home-yellow); 
+    border-left: 45px solid var(--base-home-red);
     }
+
     .base{
-        margin: 50px;
-        width: 300px;
-        height: 150px;
+        width: 130px;
+        height: 130px;
         background-color: white;
         display: grid;
-        grid-template-columns: repeat(2,80px);
-        grid-template-rows: repeat(2,80px);
+        grid-template-columns: repeat(2,70px);
+        grid-template-rows: repeat(2,70px);
         align-items: center;
     }
+    
     .piece {
-        margin: 0 5px 5px 35px;
+        margin: 0 5px 5px 20px;
         width: 20px;
         height: 20px;
         border-radius: 50%;
@@ -317,4 +360,5 @@ footer{
         border-radius: 50%;
         border: 2px solid darkgray;
     }
-  }
+
+}
