@@ -93,6 +93,13 @@ const YELLOW_PLAYER_PATH = [
     0
 ];
 
+const SAFE_SPOTS = [
+    5, 6, 8, 11, 14, 17,     // blue safe spots
+    20, 32, 33, 34, 35, 36,  // red safe spots
+    37, 38, 39, 40, 41, 53,  // green safe spots
+    56, 59, 62, 65, 68, 67   // yellow safe spots
+];
+
 // Variables 
 // *****************
 let gameStarted = 0;  // 0 means game not started and 1 means 
