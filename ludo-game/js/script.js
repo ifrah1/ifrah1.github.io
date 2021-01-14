@@ -218,6 +218,12 @@ const displayPrevPlayer = (name, rolledNum) => {
 
 }
 
+const displayNextPlayer = (name, rolledNum, currentIdx) => {
+    displayPrevPlayer(name, rolledNum);
+    nextPlayerTurn(currentIdx);
+    displayWhoseTurn(arrPlayerObj[checkTurn()]);
+}
+
 /*
     generate random number between 1-6
 */
@@ -403,7 +409,7 @@ const movePiece = (oldPos, newPos, playerObj) => {
         //in future when more players will be added then we want game to keep going till one player left who is loser
         if (arrPlayerObj.length === 2) {
             if (playerObj.remainPiecesInPlay === 0) {
-                // displayWinner(playerObj);
+                displayWinner(playerObj);
             }
         } else if (playerObj.remainPiecesInPlay === 0) {
             playerObj.playerTurn = -999 //meaning they are done
@@ -466,6 +472,27 @@ const returnPlayerPiece = color => {
     return;
 }
 
+//checks how many more pieces are left that have not reached home
+const numPieceInBoard = arrPieces => {
+    let count = 0;
+
+    arrPieces.forEach(ele => {
+        if (ele !== -999) {
+            count += ele;
+        }
+    });
+    return count;
+}
+
+const displayWinner = playerObj => {
+    const playerWin = `${playerObj.name} has WON!!!!`
+
+    alert(playerWin)
+    $prevPlayerRoll.text(playerWin);
+    $playerTurn.text(playerWin);
+    $dice.text("Game Over!");
+}
+
 /*
     event handler function to handle start game 
 */
@@ -525,9 +552,10 @@ const diceHandler = evt => {
     //statement to check new number
     //if user rolls less than 6 and all pieces are out then next player turn
     if (ranNum < 6 && allOut) {
-        displayPrevPlayer(currName, ranNum);
-        nextPlayerTurn(currentIdx);
-        displayWhoseTurn(arrPlayerObj[checkTurn()]);
+        // displayPrevPlayer(currName, ranNum);
+        // nextPlayerTurn(currentIdx);
+        // displayWhoseTurn(arrPlayerObj[checkTurn()]);
+        displayNextPlayer(currName, ranNum, currentIdx);
         return;
     } else {
         console.log(ranNum);
@@ -579,20 +607,76 @@ const gameBoardHandler = evt => {
             return alert("Player piece in existing spot. Please pick another piece")
         }
 
-        if (pieceNewPos != -1 && rolledNum === 6) {
+        if (pieceNewPos !== -1 && rolledNum === 6) {
             movePiece(currPos, pieceNewPos, playerObj);
             //display current player turn since rolled a 6 
             displayPrevPlayer(playerObj.name, rolledNum);
             displayWhoseTurn(arrPlayerObj[checkTurn()]);
             return;
         } else if (pieceNewPos === -1) {
+            console.log(numPieceInBoard(playerObj.pieces));
+            const numInBoard = numPieceInBoard(playerObj.pieces);
+            console.log("numINboard: ", numInBoard);
+
+            if (numInBoard === 1) {
+                if (numInBoard === 1 && rolledNum == 6 && playerObj.remainPiecesInPlay > 1) {
+                    alert("Cannot move that piece but you can put a piece in play! ")
+                } else {
+                    alert("Cannot move that piece and no other piece to move, NEXT PLAYER TURN");
+                    displayNextPlayer(playerObj.name, rolledNum, currentIdx);
+                }
+            } else if (numInBoard > 1) {
+                //need to add logic if all pieces are inside then cannot make a move if number to big
+                //check to see all position of pieces 
+                //if no piece can make move then next player turn
+
+                //will add below into its own function later: ------
+                /*-------------------------------------------------*/
+                // const $allPieces = $(`.play`)
+                const $allPieces = $(`.${playerObj.color}-in.play`)
+                const currentPlayerPieces = [];
+
+
+                $allPieces.each(function (idx) {
+                    currentPlayerPieces.push(findDivMovePosition(playerObj.color, this.parentNode.getAttribute('id'), rolledNum));
+
+                });
+
+                //checks through the array to see if the position returned is greater than zero which means another piece can be moved instead of the chosen one
+                //reference google .some vs .every
+                //used some cause just need one number to be greater than or equal to zero
+                //where .every makes sure all numbers are
+                const hasMove = currentPlayerPieces.some(ele => ele >= 0);
+
+                if (!hasMove) {
+                    const sum = currentPlayerPieces.reduce((curr, next) => curr + next);
+
+                    if (rolledNum === 6 && playerObj.remainPiecesInPlay > 1 && sum > 0) {
+                        alert("No pieces to move but you can bring a piece in play from base")
+
+                    } else {
+                        alert("No pieces to move, next player turn");
+                        displayNextPlayer(playerObj.name, rolledNum, currentIdx);
+                        return;
+                    }
+                } else if (hasMove) {
+                    alert("Please pick another piece that can be moved");
+                    return;
+                } else {
+                    movePiece(currPos, pieceNewPos, playerObj);
+                    displayNextPlayer(playerObj.name, rolledNum, currentIdx);
+                    return;
+                }
+                /*-----------------move later-----------------------*/
+
+            } else {
+                alert("Please pick another piece on board to move");
+            }
 
         } else {
             movePiece(currPos, pieceNewPos, playerObj);
             //next player turn 
-            displayPrevPlayer(playerObj.name, rolledNum);
-            nextPlayerTurn(currentIdx);
-            displayWhoseTurn(arrPlayerObj[checkTurn()]);
+            displayNextPlayer(playerObj.name, rolledNum, currentIdx);
             return;
         }
 
