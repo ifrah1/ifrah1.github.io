@@ -239,9 +239,15 @@ const checkTurn = () => {
     check if player has all pieces out of play
 */
 const checkAllOut = piecesArr => {
-    return piecesArr.reduce((ele, accu) => {
-        return ele + accu;
-    });
+    // return piecesArr.reduce((ele, accu) => {
+    //     return ele + accu;
+    // });
+    for (let ele of piecesArr) {
+        if (ele === 1) {
+            return false;
+        }
+    }
+    return true;
 }
 
 /*
@@ -369,7 +375,7 @@ const pieceHomeCheck = (idxPos, rolledNum) => {
 /*
     check if any pieces are in new position for clicked piece to move to
 */
-const checkNewPos = newPos => {
+const checkNewPos = (newPos, currentPlayerObj) => {
     if ($(`#${newPos}`).children().length > 0
         && !SAFE_SPOTS.includes(newPos)) {
         const piecePosParentClass = $(`#${newPos}`).find('.play').attr('class');
@@ -397,7 +403,7 @@ const movePiece = (oldPos, newPos, playerObj) => {
         //in future when more players will be added then we want game to keep going till one player left who is loser
         if (arrPlayerObj.length === 2) {
             if (playerObj.remainPiecesInPlay === 0) {
-                displayWinner(playerObj);
+                // displayWinner(playerObj);
             }
         } else if (playerObj.remainPiecesInPlay === 0) {
             playerObj.playerTurn = -999 //meaning they are done
@@ -405,11 +411,11 @@ const movePiece = (oldPos, newPos, playerObj) => {
     } else {
         // check to see if another player piece is in the new spot
         // if so run kill function to send it back to its base
-        // if (($(`#${newPos}`).children().length > 0)
-        //     && !SAFE_SPOTS.includes(newPos)) {
-        //     // console.log("call kill function");
-        //     killOtherPiece(newPos);
-        // }
+        if (($(`#${newPos}`).children().length > 0)
+            && !SAFE_SPOTS.includes(newPos)) {
+            // console.log("call kill function");
+            killOtherPiece(newPos);
+        }
         newPos = newPos.toString();
 
         /* below statement finds the first div with given combined  
@@ -427,24 +433,38 @@ const movePiece = (oldPos, newPos, playerObj) => {
 /*
     kill function to send a piece back home 
 */
-// const killOtherPiece = newPos => {
-//     //grab the class of the kill piece
-//     const killPieceClass = $(`#${newPos}`).find('.play').attr('class');
+const killOtherPiece = newPos => {
+    //grab the class of the kill piece
+    const killPieceClass = $(`#${newPos}`).find('.play').attr('class');
 
-//     //use substring to grab just the color of the kill piece 
-//     const killPieceColor = killPieceClass.substring(6, killPieceClass.indexOf('-'));
-//     //remove the other player piece
-//     $(`#${newPos}`).find(`div.${killPieceColor}-in.play`).first().remove();
+    //use substring to grab just the color of the kill piece 
+    const killPieceColor = killPieceClass.substring(6, killPieceClass.indexOf('-'));
+    //remove the other player piece
+    $(`#${newPos}`).find(`div.${killPieceColor}-in.play`).first().remove();
 
-//     //update the otherPlayer pieces info for that player obj
-//     if (killPieceColor === 'red') {
-//         returnPlayerPiece(playerOne);
-//     } else if (killPieceColor === 'green') {
-//         returnPlayerPiece(playerTwo);
-//     }//will add other players later
+    //update the otherPlayer pieces info for that player obj
+    returnPlayerPiece(killPieceColor);
 
-//     return;
-// }
+    return;
+}
+
+/*
+    returns the killed piece back to player base 
+*/
+const returnPlayerPiece = color => {
+    // let idx;
+    //grab the player obj position of the color being killed 
+    for (let i in arrPlayerObj) {
+        if (arrPlayerObj[i].color === color) {
+            updatePlayerPiece(arrPlayerObj[i], 0)
+            break;
+        }
+    }
+
+    $(`#${color}-inner-base`).append(`<div class="piece ${color}-in"></div>`);
+
+    return;
+}
 
 /*
     event handler function to handle start game 
@@ -504,7 +524,7 @@ const diceHandler = evt => {
 
     //statement to check new number
     //if user rolls less than 6 and all pieces are out then next player turn
-    if (ranNum < 6 && allOut <= 0) {
+    if (ranNum < 6 && allOut) {
         displayPrevPlayer(currName, ranNum);
         nextPlayerTurn(currentIdx);
         displayWhoseTurn(arrPlayerObj[checkTurn()]);
@@ -554,7 +574,7 @@ const gameBoardHandler = evt => {
         console.log(pieceNewPos);
 
         //check if existing piece is in new position 
-        const check = checkNewPos(pieceNewPos);
+        const check = checkNewPos(pieceNewPos, playerObj);
         if (check) {
             return alert("Player piece in existing spot. Please pick another piece")
         }
